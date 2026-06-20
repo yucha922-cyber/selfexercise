@@ -44,8 +44,8 @@ export default function HomePage() {
           className="pointer-events-none absolute -bottom-24 -left-16 h-56 w-56 rounded-full bg-ink-50 blur-3xl"
         />
         <div className="relative">
-          <div className="mb-6">
-            <Logo size={40} />
+          <div className="mb-5">
+            <Logo size={96} />
           </div>
           <p className="mb-3 inline-flex items-center gap-2 rounded-full bg-brand-50 px-3 py-1 text-xs font-medium text-brand-700">
             <span className="h-1.5 w-1.5 rounded-full bg-brand-500" />

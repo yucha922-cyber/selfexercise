@@ -4,7 +4,9 @@ export default function Footer() {
   return (
     <footer className="mt-20 border-t border-ink-100 bg-cream-50">
       <div className="mx-auto max-w-5xl px-4 py-10">
-        <Logo size={30} />
+        <span className="inline-flex rounded-2xl bg-white p-2 shadow-sm">
+          <Logo size={56} />
+        </span>
         <p className="mt-4 max-w-2xl text-sm leading-relaxed text-ink-500">
           NAORU セルフケアライブラリは、整体院に通院されている患者様が、ご自宅でも
           安心してセルフケアを続けられるようにまとめた情報サイトです。
