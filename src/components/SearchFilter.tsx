@@ -65,10 +65,13 @@ export default function SearchFilter({ items, initialQuery = "" }: Props) {
           onChange={(e) => setQuery(e.target.value)}
           placeholder="症状名・部位・キーワードで検索"
           aria-label="セルフケアを検索"
-          className="w-full rounded-xl border border-gray-200 bg-white py-3 pl-11 pr-4 text-base text-navy-900 shadow-sm outline-none focus:border-navy-400 focus:ring-2 focus:ring-navy-100"
+          className="w-full rounded-2xl border border-ink-200 bg-white py-3.5 pl-12 pr-4 text-base text-ink-900 shadow-soft outline-none transition focus:border-brand-400 focus:ring-4 focus:ring-brand-100"
         />
-        <span className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-gray-400">
-          🔍
+        <span className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-ink-300">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden>
+            <circle cx="11" cy="11" r="7" />
+            <path d="M21 21l-4-4" />
+          </svg>
         </span>
       </div>
 
@@ -84,13 +87,15 @@ export default function SearchFilter({ items, initialQuery = "" }: Props) {
         />
       </div>
 
-      <div className="mt-3 flex items-center justify-between">
-        <p className="text-sm text-gray-500">{filtered.length}件のセルフケア</p>
+      <div className="mt-4 flex items-center justify-between">
+        <p className="text-sm text-ink-500">
+          <span className="font-bold text-ink-800">{filtered.length}</span> 件のセルフケア
+        </p>
         {hasFilter && (
           <button
             type="button"
             onClick={reset}
-            className="text-sm text-navy-600 underline underline-offset-2 hover:text-navy-800"
+            className="text-sm font-medium text-brand-600 underline underline-offset-2 hover:text-brand-700"
           >
             条件をクリア
           </button>
@@ -126,11 +131,11 @@ function Select({
 }) {
   return (
     <label className="block">
-      <span className="mb-1 block text-xs font-medium text-gray-500">{label}</span>
+      <span className="mb-1 block text-xs font-medium text-ink-400">{label}</span>
       <select
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className="w-full rounded-xl border border-gray-200 bg-white py-2.5 px-3 text-sm text-navy-900 outline-none focus:border-navy-400 focus:ring-2 focus:ring-navy-100"
+        className="w-full rounded-xl border border-ink-200 bg-white py-2.5 px-3 text-sm text-ink-900 outline-none transition focus:border-brand-400 focus:ring-4 focus:ring-brand-100"
       >
         <option value="">すべて</option>
         {options.map((o) => (

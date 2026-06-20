@@ -3,28 +3,35 @@ import type { Category } from "@/data/categories";
 
 export default function CategoryGrid({
   title,
+  subtitle,
   basePath,
   items,
-  accent = "navy",
+  accent = "ink",
 }: {
   title: string;
+  subtitle?: string;
   basePath: string;
   items: Category[];
-  accent?: "navy" | "accent";
+  accent?: "ink" | "brand";
 }) {
   const chip =
-    accent === "navy"
-      ? "border-navy-100 bg-navy-50 text-navy-700 hover:bg-navy-100"
-      : "border-accent-100 bg-accent-50 text-accent-700 hover:bg-accent-100";
+    accent === "brand"
+      ? "border-brand-100 bg-brand-50/60 text-brand-700 hover:border-brand-300 hover:bg-brand-50"
+      : "border-ink-100 bg-white text-ink-700 hover:border-ink-300 hover:bg-ink-50";
   return (
-    <section className="mt-8">
-      <h2 className="mb-3 text-lg font-bold text-navy-800">{title}</h2>
-      <div className="flex flex-wrap gap-2">
+    <section className="mt-12">
+      <div className="mb-4">
+        <h2 className="heading-accent inline-block font-serif text-xl font-bold text-ink-800">
+          {title}
+        </h2>
+        {subtitle && <p className="mt-2 text-sm text-ink-400">{subtitle}</p>}
+      </div>
+      <div className="flex flex-wrap gap-2.5">
         {items.map((c) => (
           <Link
             key={c.slug}
             href={`${basePath}/${c.slug}/`}
-            className={`rounded-full border px-4 py-2 text-sm font-medium transition ${chip}`}
+            className={`rounded-full border px-4 py-2.5 text-sm font-medium shadow-sm transition ${chip}`}
           >
             {c.name}
           </Link>

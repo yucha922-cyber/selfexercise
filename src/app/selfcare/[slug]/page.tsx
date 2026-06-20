@@ -73,24 +73,26 @@ export default function SelfCarePage({ params }: { params: { slug: string } }) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
 
-      <nav className="text-sm text-gray-500">
-        <Link href="/" className="hover:text-navy-600">
+      <nav className="text-sm text-ink-400">
+        <Link href="/" className="hover:text-brand-600">
           ホーム
         </Link>
-        <span className="mx-1">/</span>
-        <span className="text-navy-700">{item.title}</span>
+        <span className="mx-1.5">/</span>
+        <span className="text-ink-600">{item.title}</span>
       </nav>
 
-      <header className="mt-3 flex items-start justify-between gap-3">
-        <h1 className="text-2xl font-bold text-navy-800">{item.title}</h1>
+      <header className="mt-4 flex items-start justify-between gap-3">
+        <h1 className="font-serif text-2xl font-bold leading-snug text-ink-900 sm:text-3xl">
+          {item.title}
+        </h1>
         <FavoriteButton
           slug={item.slug}
-          className="h-11 w-11 shrink-0 border border-gray-200 bg-white text-2xl"
+          className="h-11 w-11 shrink-0 border border-ink-200 bg-white text-2xl"
         />
       </header>
 
-      <div className="mt-3 flex flex-wrap items-center gap-3 text-sm text-gray-600">
-        <span className="rounded-full bg-gray-100 px-3 py-1">⏱ {item.duration}</span>
+      <div className="mt-4 flex flex-wrap items-center gap-3 text-sm text-ink-500">
+        <span className="rounded-full bg-cream-200 px-3 py-1">⏱ {item.duration}</span>
         <span className="flex items-center gap-1">
           難易度 <Difficulty level={item.difficulty} />
         </span>
@@ -119,10 +121,10 @@ export default function SelfCarePage({ params }: { params: { slug: string } }) {
         <ol className="space-y-2">
           {item.steps.map((s, i) => (
             <li key={i} className="flex gap-3 text-gray-700">
-              <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-navy-700 text-xs font-bold text-white">
+              <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-brand-500 text-xs font-bold text-white">
                 {i + 1}
               </span>
-              <span className="leading-relaxed">{s}</span>
+              <span className="leading-relaxed text-ink-700">{s}</span>
             </li>
           ))}
         </ol>
@@ -218,8 +220,8 @@ function Section({
   children: React.ReactNode;
 }) {
   return (
-    <section className="mt-8">
-      <h2 className="mb-3 border-l-4 border-accent-500 pl-3 text-lg font-bold text-navy-800">
+    <section className="mt-9">
+      <h2 className="mb-4 border-l-[3px] border-brand-500 pl-3 font-serif text-lg font-bold text-ink-800">
         {title}
       </h2>
       {children}

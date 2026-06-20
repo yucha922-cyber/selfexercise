@@ -1,6 +1,6 @@
 {
-  "name": "セルフケアライブラリ",
-  "short_name": "セルフケア",
+  "name": "NAORU セルフケアライブラリ",
+  "short_name": "NAORU",
   "description": "ご自宅で簡単にできるストレッチ・エクササイズをまとめたセルフケア情報サイト",
   "start_url": "./",
   "scope": "./",

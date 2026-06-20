@@ -26,20 +26,20 @@ export default function RankingList({ items }: { items: SelfCare[] }) {
         <li key={item.slug}>
           <Link
             href={`/selfcare/${item.slug}/`}
-            className="flex items-center gap-4 rounded-2xl border border-gray-100 bg-white p-4 shadow-sm transition hover:border-navy-200 hover:shadow-md"
+            className="card-hover flex items-center gap-4 rounded-2xl border border-ink-100 bg-white p-4 shadow-soft hover:border-brand-200 hover:shadow-lift"
           >
             <span
-              className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-sm font-bold ${
-                i < 3 ? "bg-accent-500 text-white" : "bg-gray-100 text-gray-500"
+              className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full font-serif text-sm font-bold ${
+                i < 3 ? "bg-brand-500 text-white" : "bg-cream-200 text-ink-400"
               }`}
             >
               {i + 1}
             </span>
             <span className="min-w-0 flex-1">
-              <span className="block truncate font-bold text-navy-800">
+              <span className="block truncate font-serif font-bold text-ink-800">
                 {item.title}
               </span>
-              <span className="mt-1 flex items-center gap-3 text-xs text-gray-500">
+              <span className="mt-1 flex items-center gap-3 text-xs text-ink-400">
                 <span>⏱ {item.duration}</span>
                 <Difficulty level={item.difficulty} />
               </span>

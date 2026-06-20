@@ -12,8 +12,10 @@ export default function SearchPage() {
   const items = getAllSelfCare();
   return (
     <div>
-      <h1 className="text-2xl font-bold text-navy-800">セルフケアを検索</h1>
-      <p className="mt-2 text-sm text-gray-600">
+      <h1 className="font-serif text-2xl font-bold text-ink-900 sm:text-3xl">
+        セルフケアを検索
+      </h1>
+      <p className="mt-2 text-sm text-ink-500">
         キーワード・症状・部位・タグを組み合わせて絞り込めます。
       </p>
       <div className="mt-6">
