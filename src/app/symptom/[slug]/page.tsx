@@ -30,9 +30,11 @@ export default function SymptomPage({ params }: { params: { slug: string } }) {
 
   return (
     <div>
-      <p className="text-sm text-gray-500">症状別</p>
-      <h1 className="mt-1 text-2xl font-bold text-navy-800">{name}のセルフケア</h1>
-      <p className="mt-2 text-sm text-gray-600">{items.length}件のセルフケアがあります。</p>
+      <p className="text-xs font-medium tracking-wider2 text-brand-600">症状からさがす</p>
+      <h1 className="mt-1.5 font-serif text-2xl font-bold text-ink-900 sm:text-3xl">
+        {name}のセルフケア
+      </h1>
+      <p className="mt-2 text-sm text-ink-500">{items.length}件のセルフケアがあります。</p>
 
       {items.length > 0 ? (
         <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">

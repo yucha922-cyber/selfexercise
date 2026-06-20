@@ -30,9 +30,9 @@ export default function FavoriteButton({
       onClick={onClick}
       aria-pressed={active}
       aria-label={active ? "お気に入りから削除" : "お気に入りに追加"}
-      className={`inline-flex items-center justify-center rounded-full transition-colors ${className}`}
+      className={`inline-flex items-center justify-center rounded-full transition-all active:scale-90 ${className}`}
     >
-      <span className={mounted && active ? "text-accent-500" : "text-gray-300"}>
+      <span className={mounted && active ? "text-brand-500" : "text-ink-300"}>
         {mounted && active ? "♥" : "♡"}
       </span>
     </button>

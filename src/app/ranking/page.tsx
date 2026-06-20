@@ -11,8 +11,8 @@ export default function RankingPage() {
   const items = getAllSelfCare();
   return (
     <div>
-      <h1 className="text-2xl font-bold text-navy-800">人気ランキング</h1>
-      <p className="mt-2 text-sm text-gray-600">
+      <h1 className="font-serif text-2xl font-bold text-ink-900 sm:text-3xl">人気ランキング</h1>
+      <p className="mt-2 text-sm text-ink-500">
         全体の人気度と、あなたがよく見ているセルフケアをもとに並べています。
       </p>
       <div className="mt-6">
