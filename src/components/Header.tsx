@@ -3,10 +3,10 @@ import Logo from "./Logo";
 
 export default function Header() {
   return (
-    <header className="sticky top-0 z-30 border-b border-ink-100/70 bg-cream-50/85 backdrop-blur-md">
-      <div className="mx-auto flex max-w-5xl items-center justify-between px-4 py-3 sm:py-4">
-        <Link href="/" className="flex items-center gap-3" aria-label="NAORU セルフケアライブラリ ホーム">
-          <Logo size={30} />
+    <header className="sticky top-0 z-30 border-b border-ink-100/70 bg-white/90 backdrop-blur-md">
+      <div className="mx-auto flex max-w-5xl items-center justify-between px-4 py-2.5">
+        <Link href="/" className="flex items-center gap-2.5" aria-label="NAORU セルフケアライブラリ ホーム">
+          <Logo size={46} />
           <span className="hidden text-xs font-medium tracking-wider2 text-ink-400 sm:inline">
             セルフケアライブラリ
           </span>
