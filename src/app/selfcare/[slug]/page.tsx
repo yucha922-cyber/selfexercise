@@ -1,0 +1,228 @@
+import type { Metadata } from "next";
+import { notFound } from "next/navigation";
+import Link from "next/link";
+import Image from "next/image";
+import {
+  getAllSlugs,
+  getSelfCareBySlug,
+  getAllSelfCare,
+} from "@/lib/selfcare";
+import { symptomName, partName } from "@/data/categories";
+import { SITE } from "@/lib/site";
+import { withBasePath } from "@/lib/path";
+import Difficulty from "@/components/Difficulty";
+import FavoriteButton from "@/components/FavoriteButton";
+import SelfCareCard from "@/components/SelfCareCard";
+import ViewTracker from "@/components/ViewTracker";
+
+export function generateStaticParams() {
+  return getAllSlugs().map((slug) => ({ slug }));
+}
+
+export function generateMetadata({
+  params,
+}: {
+  params: { slug: string };
+}): Metadata {
+  const item = getSelfCareBySlug(params.slug);
+  if (!item) return {};
+  const description = `${item.purpose}（所要時間: ${item.duration} / 難易度: ★${item.difficulty}）`;
+  return {
+    title: item.title,
+    description,
+    openGraph: {
+      title: `${item.title} | ${SITE.name}`,
+      description,
+      url: `${SITE.siteUrl}/selfcare/${item.slug}/`,
+    },
+  };
+}
+
+export default function SelfCarePage({ params }: { params: { slug: string } }) {
+  const item = getSelfCareBySlug(params.slug);
+  if (!item) notFound();
+
+  // 関連セルフケア（同じ症状か部位を持つもの）
+  const related = getAllSelfCare()
+    .filter(
+      (x) =>
+        x.slug !== item.slug &&
+        (x.symptoms.some((s) => item.symptoms.includes(s)) ||
+          x.parts.some((p) => item.parts.includes(p)))
+    )
+    .slice(0, 3);
+
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    name: item.title,
+    description: item.purpose,
+    totalTime: item.duration,
+    step: item.steps.map((s, i) => ({
+      "@type": "HowToStep",
+      position: i + 1,
+      text: s,
+    })),
+  };
+
+  return (
+    <article>
+      <ViewTracker slug={item.slug} />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+
+      <nav className="text-sm text-gray-500">
+        <Link href="/" className="hover:text-navy-600">
+          ホーム
+        </Link>
+        <span className="mx-1">/</span>
+        <span className="text-navy-700">{item.title}</span>
+      </nav>
+
+      <header className="mt-3 flex items-start justify-between gap-3">
+        <h1 className="text-2xl font-bold text-navy-800">{item.title}</h1>
+        <FavoriteButton
+          slug={item.slug}
+          className="h-11 w-11 shrink-0 border border-gray-200 bg-white text-2xl"
+        />
+      </header>
+
+      <div className="mt-3 flex flex-wrap items-center gap-3 text-sm text-gray-600">
+        <span className="rounded-full bg-gray-100 px-3 py-1">⏱ {item.duration}</span>
+        <span className="flex items-center gap-1">
+          難易度 <Difficulty level={item.difficulty} />
+        </span>
+      </div>
+
+      {/* 動画 */}
+      {item.youtubeId && (
+        <div className="mt-6 aspect-video w-full overflow-hidden rounded-2xl bg-black">
+          <iframe
+            className="h-full w-full"
+            src={`https://www.youtube.com/embed/${item.youtubeId}`}
+            title={item.title}
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen
+          />
+        </div>
+      )}
+
+      {/* 目的 */}
+      <Section title="目的">
+        <p className="leading-relaxed text-gray-700">{item.purpose}</p>
+      </Section>
+
+      {/* 実施方法 */}
+      <Section title="実施方法">
+        <ol className="space-y-2">
+          {item.steps.map((s, i) => (
+            <li key={i} className="flex gap-3 text-gray-700">
+              <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-navy-700 text-xs font-bold text-white">
+                {i + 1}
+              </span>
+              <span className="leading-relaxed">{s}</span>
+            </li>
+          ))}
+        </ol>
+      </Section>
+
+      {/* 画像 */}
+      {item.images && item.images.length > 0 && (
+        <Section title="参考画像">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+            {item.images.map((src, i) => (
+              <div
+                key={i}
+                className="relative aspect-video w-full overflow-hidden rounded-xl bg-gray-100"
+              >
+                <Image
+                  src={withBasePath(src)}
+                  alt={`${item.title} 参考画像 ${i + 1}`}
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 640px) 100vw, 50vw"
+                />
+              </div>
+            ))}
+          </div>
+        </Section>
+      )}
+
+      {/* 注意事項 */}
+      {item.cautions.length > 0 && (
+        <Section title="注意事項">
+          <ul className="space-y-2 rounded-2xl border border-amber-100 bg-amber-50 p-4">
+            {item.cautions.map((c, i) => (
+              <li key={i} className="flex gap-2 text-sm text-amber-900">
+                <span aria-hidden>⚠️</span>
+                <span className="leading-relaxed">{c}</span>
+              </li>
+            ))}
+          </ul>
+        </Section>
+      )}
+
+      {/* タグ・関連カテゴリ */}
+      <Section title="関連カテゴリー">
+        <div className="flex flex-wrap gap-2">
+          {item.symptoms.map((s) => (
+            <Link
+              key={s}
+              href={`/symptom/${s}/`}
+              className="rounded-full border border-navy-100 bg-navy-50 px-3 py-1 text-sm text-navy-700 hover:bg-navy-100"
+            >
+              {symptomName(s)}
+            </Link>
+          ))}
+          {item.parts.map((p) => (
+            <Link
+              key={p}
+              href={`/part/${p}/`}
+              className="rounded-full border border-accent-100 bg-accent-50 px-3 py-1 text-sm text-accent-700 hover:bg-accent-100"
+            >
+              {partName(p)}
+            </Link>
+          ))}
+          {item.tags.map((t) => (
+            <span
+              key={t}
+              className="rounded-full bg-gray-100 px-3 py-1 text-sm text-gray-600"
+            >
+              #{t}
+            </span>
+          ))}
+        </div>
+      </Section>
+
+      {/* 関連セルフケア */}
+      {related.length > 0 && (
+        <Section title="関連するセルフケア">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {related.map((r) => (
+              <SelfCareCard key={r.slug} item={r} />
+            ))}
+          </div>
+        </Section>
+      )}
+    </article>
+  );
+}
+
+function Section({
+  title,
+  children,
+}: {
+  title: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <section className="mt-8">
+      <h2 className="mb-3 border-l-4 border-accent-500 pl-3 text-lg font-bold text-navy-800">
+        {title}
+      </h2>
+      {children}
+    </section>
+  );
+}
