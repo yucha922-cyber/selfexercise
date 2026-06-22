@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import Image from "next/image";
 import {
   getAllSlugs,
   getSelfCareBySlug,
@@ -9,10 +8,10 @@ import {
 } from "@/lib/selfcare";
 import { symptomName, partName } from "@/data/categories";
 import { SITE } from "@/lib/site";
-import { withBasePath } from "@/lib/path";
 import Difficulty from "@/components/Difficulty";
 import FavoriteButton from "@/components/FavoriteButton";
 import SelfCareCard from "@/components/SelfCareCard";
+import ImageGallery from "@/components/ImageGallery";
 import ViewTracker from "@/components/ViewTracker";
 
 export function generateStaticParams() {
@@ -130,25 +129,13 @@ export default function SelfCarePage({ params }: { params: { slug: string } }) {
         </ol>
       </Section>
 
-      {/* 画像 */}
+      {/* 画像（最大5枚・タップで拡大・キャプション対応） */}
       {item.images && item.images.length > 0 && (
         <Section title="参考画像">
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-            {item.images.map((src, i) => (
-              <div
-                key={i}
-                className="relative aspect-video w-full overflow-hidden rounded-xl bg-gray-100"
-              >
-                <Image
-                  src={withBasePath(src)}
-                  alt={`${item.title} 参考画像 ${i + 1}`}
-                  fill
-                  className="object-cover"
-                  sizes="(max-width: 640px) 100vw, 50vw"
-                />
-              </div>
-            ))}
-          </div>
+          <ImageGallery images={item.images} title={item.title} />
+          <p className="mt-3 text-xs text-ink-400">
+            画像をタップすると拡大表示できます。
+          </p>
         </Section>
       )}
 

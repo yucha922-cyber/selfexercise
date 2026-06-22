@@ -103,7 +103,7 @@ npm run build      # out/ に静的ファイルが出力されます
 | `steps` | 実施方法（手順を1行ずつ） | `["背筋を伸ばす", "頭を倒す"]` |
 | `cautions` | 注意事項（1行ずつ） | `["痛みが出たら中止"]` |
 | `youtubeId` | YouTube動画ID（任意） | `"dQw4w9WgXcQ"` |
-| `images` | 画像パス（任意・複数可） | `["/images/sample.jpg"]` |
+| `images` | 画像（任意・最大5枚／説明文つき） | `[{ "src": "/images/sample.jpg", "caption": "開始姿勢" }]` |
 | `duration` | 所要時間 | `"約3分"` |
 | `difficulty` | 難易度（1〜5の数字） | `2` |
 | `symptoms` | 関連する症状の slug | `["katakori", "kubikori"]` |
@@ -117,10 +117,52 @@ YouTubeのURLが `https://www.youtube.com/watch?v=XXXXXXXXXXX` の場合、
 `XXXXXXXXXXX` の部分が動画IDです。これを `youtubeId` に入れてください。
 動画が不要な場合は `""`（空）のままで構いません。
 
-### 画像の追加方法
+### 画像の追加方法（初心者向け）
 
-1. 画像ファイルを `public/images/` フォルダに入れます。
-2. `images` に `"/images/ファイル名.jpg"` のように指定します（複数可）。
+各セルフケアには **最大5枚** の画像を、それぞれ **説明文（caption）つき** で登録できます。
+登録した画像は詳細ページに並び、スマホでもきれいに表示され、**タップすると拡大**されます。
+
+#### 画像を1枚追加する手順
+
+1. **画像を用意する**
+   スマホやカメラで撮った写真でOKです。ファイル名は半角英数字にします
+   （例: `stretch1.jpg`）。容量が大きい場合は事前に小さくしておくと表示が速くなります。
+
+2. **画像をフォルダに入れる**
+   GitHubの画面から `public/images/` の中にアップロードします。
+   セルフケアごとにフォルダを分けると整理しやすいです（例: `public/images/katakori/`）。
+   - GitHubサイトで `public/images` フォルダを開く →「Add file」→「Upload files」→
+     画像をドラッグ＆ドロップ →「Commit changes」
+
+3. **JSONに画像を登録する**
+   `src/data/selfcare.json` を開き、対象のセルフケアの `images` に1行追加します。
+
+   ```json
+   "images": [
+     { "src": "/images/katakori/stretch1.jpg", "caption": "開始姿勢" }
+   ]
+   ```
+
+   - `src` … 画像の場所。**必ず `/images/` から書きます**（先頭のスラッシュを忘れずに）。
+     `public` は書きません（`public/images/...` ではなく `/images/...`）。
+   - `caption` … 画像の下に出る説明文。不要なら省略できます。
+
+4. **2枚目以降を足すとき** は、`,`（カンマ）で区切って続けます（最大5枚）。
+
+   ```json
+   "images": [
+     { "src": "/images/katakori/stretch1.jpg", "caption": "開始姿勢" },
+     { "src": "/images/katakori/stretch2.jpg", "caption": "ストレッチ中" },
+     { "src": "/images/katakori/stretch3.jpg", "caption": "NG例" }
+   ]
+   ```
+
+5. **保存（Commit）してマージ** すれば、自動で公開サイトに反映されます。
+
+> よくある注意:
+> - `src` の先頭は `/images/`（`public` は付けない）
+> - 各行は `{ ... }`、行と行の間は `,` で区切る、最後の行にはカンマを付けない
+> - ファイル名の大文字・小文字は区別されます（`Stretch1.JPG` と `stretch1.jpg` は別物）
 
 ### 症状・部位の slug 一覧
 
