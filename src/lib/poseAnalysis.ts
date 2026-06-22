@@ -49,6 +49,14 @@ async function getDetector(): Promise<any> {
 
 type KP = { x: number; y: number; score?: number; name?: string };
 
+export type Keypoint = KP;
+
+/** 描画用: 写真ごとの検出結果 */
+export type PoseOnImage = {
+  slot: "front" | "side";
+  keypoints: KP[];
+};
+
 export type ScoreItem = {
   key: string;
   label: string;
@@ -63,6 +71,8 @@ export type AnalysisResult = {
   items: ScoreItem[];
   /** 改善ポイントの文言（セルフケア詳細は含めない） */
   points: string[];
+  /** 写真ごとの検出キーポイント（オーバーレイ描画用） */
+  poses: PoseOnImage[];
   error?: string;
 };
 
@@ -194,14 +204,21 @@ export async function analyzeImages(
 ): Promise<AnalysisResult> {
   try {
     const items: ScoreItem[] = [];
+    const poses: PoseOnImage[] = [];
 
     if (side) {
       const k = await detect(side);
-      if (k) items.push(...analyzeSide(k));
+      if (k) {
+        items.push(...analyzeSide(k));
+        poses.push({ slot: "side", keypoints: k });
+      }
     }
     if (front) {
       const k = await detect(front);
-      if (k) items.push(...analyzeFront(k));
+      if (k) {
+        items.push(...analyzeFront(k));
+        poses.push({ slot: "front", keypoints: k });
+      }
     }
 
     if (items.length === 0) {
@@ -210,6 +227,7 @@ export async function analyzeImages(
         overall: 0,
         items: [],
         points: [],
+        poses: [],
         error:
           "姿勢を読み取れませんでした。全身がはっきり写った写真で再度お試しください。",
       };
@@ -230,13 +248,14 @@ export async function analyzeImages(
       .map((it) => POINT_MESSAGES[it.key])
       .filter(Boolean);
 
-    return { detected: true, overall, items, points };
+    return { detected: true, overall, items, points, poses };
   } catch (e) {
     return {
       detected: false,
       overall: 0,
       items: [],
       points: [],
+      poses: [],
       error:
         "解析エンジンを読み込めませんでした。通信環境の良い場所で再度お試しください。",
     };
