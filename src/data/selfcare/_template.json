@@ -1,0 +1,24 @@
+{
+  "order": 999,
+  "slug": "REPLACE-with-english-slug",
+  "title": "ここにタイトルを書く（例：肩こり改善ストレッチ）",
+  "purpose": "このセルフケアを行う目的・理由を書きます。",
+  "steps": [
+    "手順1を書く",
+    "手順2を書く",
+    "手順3を書く"
+  ],
+  "cautions": [
+    "注意事項があれば書く（なければ空にする）"
+  ],
+  "youtubeId": "",
+  "images": [
+    { "src": "/images/REPLACE/photo1.jpg", "caption": "開始姿勢" }
+  ],
+  "duration": "約3分",
+  "difficulty": 2,
+  "symptoms": ["katakori"],
+  "parts": ["kata"],
+  "tags": ["ストレッチ"],
+  "popularity": 50
+}

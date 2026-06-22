@@ -1,0 +1,49 @@
+{
+  "order": 10,
+  "slug": "katakori-stretch",
+  "title": "肩こり改善ストレッチ",
+  "purpose": "デスクワークなどで硬くなった肩まわりの筋肉（僧帽筋）をやさしく伸ばし、血行を促して肩こりの不快感をやわらげます。",
+  "steps": [
+    "背筋を伸ばしてイスに座ります。",
+    "右手を頭の左側にそえます。",
+    "息を吐きながら、ゆっくり頭を右に倒します。",
+    "首の左側が伸びているのを感じながら20秒キープします。",
+    "反対側も同じように行います。左右2回ずつ繰り返します。"
+  ],
+  "cautions": [
+    "痛みを感じる場合はすぐに中止してください。",
+    "頭を手で強く引っ張らず、頭の重みだけで倒すイメージで行いましょう。",
+    "めまいやしびれがある場合は行わず、医師にご相談ください。"
+  ],
+  "youtubeId": "",
+  "images": [
+    {
+      "src": "/images/katakori/stretch1.png",
+      "caption": "開始姿勢"
+    },
+    {
+      "src": "/images/katakori/stretch2.png",
+      "caption": "ストレッチ中"
+    },
+    {
+      "src": "/images/katakori/stretch3.png",
+      "caption": "NG例：肩が上がらないように注意"
+    }
+  ],
+  "duration": "約3分",
+  "difficulty": 1,
+  "symptoms": [
+    "katakori",
+    "kubikori"
+  ],
+  "parts": [
+    "kubi",
+    "kata"
+  ],
+  "tags": [
+    "ストレッチ",
+    "デスクワーク",
+    "首"
+  ],
+  "popularity": 95
+}

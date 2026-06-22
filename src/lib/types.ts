@@ -6,6 +6,8 @@ export type SelfCareImage = {
 };
 
 export type SelfCare = {
+  /** 表示順（小さいほど先に表示。省略可） */
+  order?: number;
   /** URL に使う一意なスラッグ（半角英数字とハイフン） */
   slug: string;
   /** タイトル 例: 肩こり改善ストレッチ */
