@@ -1,6 +1,6 @@
 // カテゴリー定義。
 // 症状(symptoms)・部位(parts)の一覧をここで一元管理します。
-// セルフケアを追加するときは src/data/selfcare.json の symptoms / parts に
+// セルフケアを追加するときは src/data/selfcare/ 内の各JSONの symptoms / parts に
 // 下記の slug を指定してください。
 
 export type Category = {
