@@ -4,6 +4,7 @@ import { PARTS, partName } from "@/data/categories";
 import { getSelfCareByPart } from "@/lib/selfcare";
 import { SITE } from "@/lib/site";
 import SelfCareCard from "@/components/SelfCareCard";
+import AuthGate from "@/components/AuthGate";
 
 export function generateStaticParams() {
   return PARTS.map((p) => ({ slug: p.slug }));
@@ -18,6 +19,7 @@ export function generateMetadata({
   return {
     title: `${name}のセルフケア`,
     description: `${name}まわりにおすすめの自宅でできるセルフケア・ストレッチをまとめています。`,
+    robots: { index: false, follow: false },
     alternates: { canonical: `${SITE.siteUrl}/part/${params.slug}/` },
   };
 }
@@ -29,7 +31,7 @@ export default function PartPage({ params }: { params: { slug: string } }) {
   const items = getSelfCareByPart(params.slug);
 
   return (
-    <div>
+    <AuthGate>
       <p className="text-xs font-medium tracking-wider2 text-brand-600">部位からさがす</p>
       <h1 className="mt-1.5 font-serif text-2xl font-bold text-ink-900 sm:text-3xl">
         {name}のセルフケア
@@ -47,6 +49,6 @@ export default function PartPage({ params }: { params: { slug: string } }) {
           まだセルフケアが登録されていません。
         </p>
       )}
-    </div>
+    </AuthGate>
   );
 }

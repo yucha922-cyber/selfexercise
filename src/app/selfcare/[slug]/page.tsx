@@ -13,6 +13,7 @@ import FavoriteButton from "@/components/FavoriteButton";
 import SelfCareCard from "@/components/SelfCareCard";
 import ImageGallery from "@/components/ImageGallery";
 import ViewTracker from "@/components/ViewTracker";
+import AuthGate from "@/components/AuthGate";
 
 export function generateStaticParams() {
   return getAllSlugs().map((slug) => ({ slug }));
@@ -29,6 +30,7 @@ export function generateMetadata({
   return {
     title: item.title,
     description,
+    robots: { index: false, follow: false },
     openGraph: {
       title: `${item.title} | ${SITE.name}`,
       description,
@@ -65,6 +67,7 @@ export default function SelfCarePage({ params }: { params: { slug: string } }) {
   };
 
   return (
+    <AuthGate>
     <article>
       <ViewTracker slug={item.slug} />
       <script
@@ -196,6 +199,7 @@ export default function SelfCarePage({ params }: { params: { slug: string } }) {
         </Section>
       )}
     </article>
+    </AuthGate>
   );
 }
 

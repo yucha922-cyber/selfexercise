@@ -1,17 +1,19 @@
 import type { Metadata } from "next";
 import { getAllSelfCare } from "@/lib/selfcare";
 import SearchFilter from "@/components/SearchFilter";
+import AuthGate from "@/components/AuthGate";
 
 export const metadata: Metadata = {
   title: "セルフケアを検索",
   description:
     "症状名・部位・タグからセルフケアを検索・絞り込みできます。複数条件での絞り込みにも対応。",
+  robots: { index: false, follow: false },
 };
 
 export default function SearchPage() {
   const items = getAllSelfCare();
   return (
-    <div>
+    <AuthGate>
       <h1 className="font-serif text-2xl font-bold text-ink-900 sm:text-3xl">
         セルフケアを検索
       </h1>
@@ -21,6 +23,6 @@ export default function SearchPage() {
       <div className="mt-6">
         <SearchFilter items={items} />
       </div>
-    </div>
+    </AuthGate>
   );
 }
