@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { analyzeImages, type AnalysisResult } from "@/lib/poseAnalysis";
 import BookingCTA from "./BookingCTA";
+import PoseOverlay from "./PoseOverlay";
 
 type Slot = "front" | "side";
 
@@ -55,7 +56,7 @@ export default function PostureAnalyzer() {
   };
 
   if (status === "done" && result) {
-    return <ResultView result={result} onReset={reset} />;
+    return <ResultView result={result} previews={previews} onReset={reset} />;
   }
 
   return (
@@ -140,11 +141,14 @@ function UploadSlot({
 
 function ResultView({
   result,
+  previews,
   onReset,
 }: {
   result: AnalysisResult;
+  previews: Record<Slot, string | null>;
   onReset: () => void;
 }) {
+  const slotLabel: Record<Slot, string> = { front: "正面", side: "側面" };
   if (!result.detected) {
     return (
       <div className="rounded-2xl border border-ink-100 bg-white p-6 text-center shadow-soft">
@@ -188,6 +192,32 @@ function ResultView({
           />
         </div>
       </section>
+
+      {/* 解析ポイント（写真にドット＋骨格を重ねて表示） */}
+      {result.poses.length > 0 && (
+        <section className="rounded-2xl border border-ink-100 bg-white p-5 shadow-soft">
+          <h3 className="mb-3 font-serif text-base font-bold text-ink-800">
+            解析ポイント
+          </h3>
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+            {result.poses.map((pose) => {
+              const src = previews[pose.slot];
+              if (!src) return null;
+              return (
+                <PoseOverlay
+                  key={pose.slot}
+                  src={src}
+                  keypoints={pose.keypoints}
+                  label={`${slotLabel[pose.slot]}：検出した姿勢ポイント`}
+                />
+              );
+            })}
+          </div>
+          <p className="mt-3 text-xs leading-relaxed text-ink-400">
+            写真から検出した体の各ポイントと骨格ラインを表示しています。
+          </p>
+        </section>
+      )}
 
       {/* 項目別スコア */}
       <section className="rounded-2xl border border-ink-100 bg-white p-5 shadow-soft">
