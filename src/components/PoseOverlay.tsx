@@ -1,9 +1,9 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import type { Keypoint } from "@/lib/poseAnalysis";
+import { type Keypoint, MIN_KP_SCORE } from "@/lib/poseAnalysis";
 
-// MoveNet(17点)の骨格つながり
+// 骨格つながり（MoveNet/BlazePose 共通の名称。足先は BlazePose のみ）
 const SKELETON: [string, string][] = [
   ["left_shoulder", "right_shoulder"],
   ["left_shoulder", "left_elbow"],
@@ -17,13 +17,44 @@ const SKELETON: [string, string][] = [
   ["left_knee", "left_ankle"],
   ["right_hip", "right_knee"],
   ["right_knee", "right_ankle"],
+  // 足先（BlazePose）
+  ["left_ankle", "left_heel"],
+  ["left_heel", "left_foot_index"],
+  ["left_ankle", "left_foot_index"],
+  ["right_ankle", "right_heel"],
+  ["right_heel", "right_foot_index"],
+  ["right_ankle", "right_foot_index"],
+  // 頭部
   ["nose", "left_eye"],
   ["nose", "right_eye"],
   ["left_eye", "left_ear"],
   ["right_eye", "right_ear"],
 ];
 
-const MIN_SCORE = 0.3;
+const MIN_SCORE = MIN_KP_SCORE;
+
+// ドット表示する主要ポイント（顔の細かい点や指は除外してすっきり見せる）
+const DOT_POINTS = new Set<string>([
+  "nose",
+  "left_ear",
+  "right_ear",
+  "left_shoulder",
+  "right_shoulder",
+  "left_elbow",
+  "right_elbow",
+  "left_wrist",
+  "right_wrist",
+  "left_hip",
+  "right_hip",
+  "left_knee",
+  "right_knee",
+  "left_ankle",
+  "right_ankle",
+  "left_heel",
+  "right_heel",
+  "left_foot_index",
+  "right_foot_index",
+]);
 
 // 写真の上に検出したキーポイント（ドット）と骨格ラインを重ねて描画する。
 export default function PoseOverlay({
@@ -79,6 +110,7 @@ export default function PoseOverlay({
       const r = Math.max(3, unit * 2.4);
       keypoints.forEach((k) => {
         if ((k.score ?? 0) < MIN_SCORE) return;
+        if (k.name && !DOT_POINTS.has(k.name)) return;
         ctx.beginPath();
         ctx.arc(k.x, k.y, r, 0, Math.PI * 2);
         ctx.fillStyle = "#ffffff";
