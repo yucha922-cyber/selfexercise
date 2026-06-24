@@ -40,12 +40,25 @@ async function getDetector(): Promise<any> {
     const pd = window.poseDetection;
     if (!tf || !pd) throw new Error("解析エンジンの初期化に失敗しました");
     await tf.ready();
-    return pd.createDetector(pd.SupportedModels.MoveNet, {
-      modelType: pd.movenet.modelType.SINGLEPOSE_THUNDER,
-    });
+    // 立位の全身（脚・足まで）検出に強い BlazePose を優先。
+    // 失敗時は MoveNet(Thunder) にフォールバック。
+    try {
+      return await pd.createDetector(pd.SupportedModels.BlazePose, {
+        runtime: "tfjs",
+        modelType: "full",
+        enableSmoothing: false,
+      });
+    } catch {
+      return await pd.createDetector(pd.SupportedModels.MoveNet, {
+        modelType: pd.movenet.modelType.SINGLEPOSE_THUNDER,
+      });
+    }
   })();
   return detectorPromise;
 }
+
+// 検出点の採用しきい値（低いほど多くの点を表示）
+export const MIN_KP_SCORE = 0.2;
 
 type KP = { x: number; y: number; score?: number; name?: string };
 
@@ -78,7 +91,7 @@ export type AnalysisResult = {
 
 function kp(keypoints: KP[], name: string): KP | undefined {
   const k = keypoints.find((p) => p.name === name);
-  return k && (k.score ?? 0) > 0.3 ? k : undefined;
+  return k && (k.score ?? 0) >= MIN_KP_SCORE ? k : undefined;
 }
 
 // 角度（垂直線からの傾き・度）
