@@ -34,6 +34,14 @@
 | `kata-scapula-squeeze` | 肩甲骨寄せ運動 |
 | `kata-scapula-roll` | 肩甲骨回し |
 | `kata-banzai` | バンザイ体操 |
+| `kata-trap-stretch` | 僧帽筋ストレッチ |
+
+## フォルダ一覧（前腕・肘）
+
+| フォルダ名 | エクササイズ |
+| --- | --- |
+| `zenwan-flexor-stretch` | 前腕屈筋群ストレッチ |
+| `zenwan-extensor-stretch` | 前腕伸筋群ストレッチ |
 
 ## 補足
 
