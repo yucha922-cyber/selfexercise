@@ -1,6 +1,6 @@
 import fs from "node:fs";
 import path from "node:path";
-import type { SelfCare } from "./types";
+import type { SelfCare, SelfCareImage } from "./types";
 
 // セルフケアは「1エクササイズ＝1ファイル」で管理します。
 // src/data/selfcare/ フォルダ内の *.json をビルド時にすべて読み込みます。
@@ -8,6 +8,34 @@ import type { SelfCare } from "./types";
 // 削除: そのファイルを消すだけ
 // ※ "_" や "." で始まるファイル（例: _template.json）は読み込みません。
 const DIR = path.join(process.cwd(), "src", "data", "selfcare");
+
+// 画像は public/images/<slug>/ フォルダに置くだけで自動表示されます。
+// ・ファイル名の昇順で並びます（例: 01_xxx.jpg → 02_xxx.jpg …）
+// ・ファイル名の先頭の数字を除いた部分がキャプションになります
+//   例: 「01_開始姿勢.jpg」→ キャプション「開始姿勢」
+// ・JSON の images に手書きの指定がある場合はそちらが優先されます
+const IMAGES_DIR = path.join(process.cwd(), "public", "images");
+const IMAGE_EXTS = new Set([".jpg", ".jpeg", ".png", ".webp", ".gif", ".avif"]);
+
+function loadImagesFromFolder(slug: string): SelfCareImage[] {
+  const dir = path.join(IMAGES_DIR, slug);
+  if (!fs.existsSync(dir)) return [];
+  return fs
+    .readdirSync(dir)
+    .filter(
+      (f) =>
+        !f.startsWith(".") && IMAGE_EXTS.has(path.extname(f).toLowerCase())
+    )
+    .sort((a, b) => a.localeCompare(b, "ja", { numeric: true }))
+    .map((f) => {
+      const base = path.basename(f, path.extname(f));
+      const caption = base.replace(/^\d+[-_ ]*/, "").trim();
+      return {
+        src: `/images/${slug}/${f}`,
+        ...(caption ? { caption } : {}),
+      };
+    });
+}
 
 function loadAll(): SelfCare[] {
   const files = fs
@@ -21,7 +49,12 @@ function loadAll(): SelfCare[] {
   const items: SelfCare[] = files.map((file) => {
     const raw = fs.readFileSync(path.join(DIR, file), "utf-8");
     try {
-      return JSON.parse(raw) as SelfCare;
+      const item = JSON.parse(raw) as SelfCare;
+      // JSON に images の指定がなければ、public/images/<slug>/ から自動読み込み
+      if (!item.images || item.images.length === 0) {
+        item.images = loadImagesFromFolder(item.slug);
+      }
+      return item;
     } catch (e) {
       throw new Error(
         `セルフケアのデータ読み込みに失敗しました: src/data/selfcare/${file}\n` +

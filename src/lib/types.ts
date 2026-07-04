@@ -20,7 +20,10 @@ export type SelfCare = {
   cautions: string[];
   /** YouTube 動画ID（埋め込み用・任意） */
   youtubeId?: string;
-  /** 画像（任意・最大5枚。それぞれ説明文 caption を付けられます） */
+  /**
+   * 画像（任意・最大8枚。それぞれ説明文 caption を付けられます）
+   * 空の場合は public/images/<slug>/ フォルダ内の画像が自動で読み込まれます。
+   */
   images?: SelfCareImage[];
   /** 所要時間 例: 約3分 */
   duration: string;

@@ -6,7 +6,7 @@ import type { SelfCareImage } from "@/lib/types";
 import { withBasePath } from "@/lib/path";
 
 // 最大表示枚数
-const MAX_IMAGES = 5;
+const MAX_IMAGES = 8;
 
 export default function ImageGallery({
   images,
