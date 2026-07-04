@@ -1,8 +1,8 @@
 {
-  "order": 35,
+  "order": 36,
   "slug": "kubi-towel-stretch",
-  "title": "タオルを使った首ストレッチ",
-  "purpose": "タオルで頭を支えながら首の後ろをやさしく伸ばし、首こり・ストレートネックによる張りをやわらげます。",
+  "title": "タオル頚椎モビライゼーション",
+  "purpose": "タオルで首の骨（頚椎）を支えながらやさしく動かし、首こり・ストレートネックによる張りと動きの硬さをやわらげます。",
   "steps": [
     "フェイスタオルを首の後ろにかけ、両端を手で持ちます。",
     "タオルで頭を軽く前上方へ引き上げるように支えます。",
@@ -18,8 +18,18 @@
   "images": [],
   "duration": "約2分",
   "difficulty": 1,
-  "symptoms": ["kubikori", "straightneck", "katakori"],
-  "parts": ["kubi"],
-  "tags": ["ストレッチ", "タオル", "首"],
+  "symptoms": [
+    "kubikori",
+    "straightneck",
+    "katakori"
+  ],
+  "parts": [
+    "kubi"
+  ],
+  "tags": [
+    "ストレッチ",
+    "タオル",
+    "首"
+  ],
   "popularity": 60
 }
