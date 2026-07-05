@@ -50,7 +50,35 @@ export default function ImageGallery({
 
   return (
     <>
-      {/* サムネイル一覧（スマホ2列・PC3列のレスポンシブ） */}
+      {/* 1枚のみのとき: 解説入りの「1枚完結画像」を想定し、切り抜かずに全幅表示 */}
+      {list.length === 1 ? (
+        <figure className="m-0">
+          <button
+            type="button"
+            onClick={() => setOpenIndex(0)}
+            aria-label={`${list[0].caption || "解説図"}を拡大表示`}
+            className="card-hover group relative block w-full overflow-hidden rounded-xl border border-ink-100 bg-cream-100"
+          >
+            {/* 縦横比が画像ごとに異なるため、自然なサイズで表示する */}
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={withBasePath(list[0].src)}
+              alt={list[0].caption || `${title} 解説図`}
+              className="h-auto w-full transition group-hover:scale-[1.01]"
+            />
+            <span className="absolute bottom-1.5 right-1.5 rounded-md bg-ink-900/55 p-1 text-white opacity-90">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7" />
+              </svg>
+            </span>
+          </button>
+          {list[0].caption && (
+            <figcaption className="mt-1.5 text-center text-xs leading-snug text-ink-500">
+              {list[0].caption}
+            </figcaption>
+          )}
+        </figure>
+      ) : (
       <ul className="grid grid-cols-2 gap-3 sm:grid-cols-3">
         {list.map((img, i) => (
           <li key={i}>
@@ -84,6 +112,7 @@ export default function ImageGallery({
           </li>
         ))}
       </ul>
+      )}
 
       {/* ライトボックス（タップで拡大） */}
       {current && (

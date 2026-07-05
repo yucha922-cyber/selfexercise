@@ -132,7 +132,7 @@ export default function SelfCarePage({ params }: { params: { slug: string } }) {
         </ol>
       </Section>
 
-      {/* 画像（最大5枚・タップで拡大・キャプション対応） */}
+      {/* 画像（1枚なら全幅の解説図・複数ならグリッド。タップで拡大） */}
       {item.images && item.images.length > 0 && (
         <Section title="参考画像">
           <ImageGallery images={item.images} title={item.title} />
