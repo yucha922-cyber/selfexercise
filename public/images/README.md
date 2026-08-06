@@ -57,15 +57,41 @@
 | `zenwan-flexor-stretch` | 前腕屈筋群ストレッチ |
 | `zenwan-extensor-stretch` | 前腕伸筋群ストレッチ |
 
+## フォルダ一覧（腰・骨盤・体幹）
+
+| フォルダ名 | エクササイズ |
+| --- | --- |
+| `youtsu-cat-stretch` | 腰痛ケア キャット&カウ |
+| `pelvic-tilt` | 骨盤前後運動 |
+| `bridge` | ブリッジ（お尻上げ） |
+
+## フォルダ一覧（股関節・お尻）
+
+| フォルダ名 | エクササイズ |
+| --- | --- |
+| `hip-flexor-stretch` | 腸腰筋ストレッチ |
+| `adductor-stretch` | 内転筋ストレッチ |
+| `piriformis-stretch` | お尻（梨状筋）ストレッチ |
+| `glute-stretch` | 臀筋ストレッチ |
+
+## フォルダ一覧（太もも・ふくらはぎ・足）
+
+| フォルダ名 | エクササイズ |
+| --- | --- |
+| `hamstring-stretch` | ハムストリングスストレッチ |
+| `quad-stretch` | 大腿四頭筋ストレッチ |
+| `calf-stretch` | ふくらはぎストレッチ |
+| `ankle-dorsiflexion` | 足首背屈ストレッチ |
+| `plantar-fascia-stretch` | 足底筋膜ストレッチ |
+
 ## フォルダがまだ無いエクササイズ
 
-次の5本はフォルダを作っていません。画像を入れたくなったら、
+次の4本はフォルダを作っていません。画像を入れたくなったら、
 `public/images/` の中に下記の名前でフォルダを作ってから画像を置いてください。
 
 | フォルダ名 | エクササイズ |
 | --- | --- |
 | `nekoze-chest-open` | 猫背改善 胸ひらきエクササイズ |
-| `youtsu-cat-stretch` | 腰痛ケア キャット&カウ |
 | `kokansetsu-mobility` | 股関節まわりほぐし |
 | `gojukata-pendulum` | 四十肩・五十肩 振り子運動 |
 | `hiza-quad-set` | 膝痛予防 太もも強化（クアドセッティング） |
