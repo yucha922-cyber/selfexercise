@@ -12,9 +12,7 @@
     "注意事項があれば書く（なければ空にする）"
   ],
   "youtubeId": "",
-  "images": [
-    { "src": "/images/REPLACE/photo1.jpg", "caption": "開始姿勢" }
-  ],
+  "images": [],
   "duration": "約3分",
   "difficulty": 2,
   "symptoms": ["katakori"],

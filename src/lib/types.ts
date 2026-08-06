@@ -18,7 +18,11 @@ export type SelfCare = {
   steps: string[];
   /** 注意事項 */
   cautions: string[];
-  /** YouTube 動画ID（埋め込み用・任意） */
+  /**
+   * YouTube 動画（任意）。動画IDでも、YouTubeのURLをそのまま貼ってもOKです。
+   * 例: "dQw4w9WgXcQ" / "https://youtu.be/dQw4w9WgXcQ"
+   * 設定するとページ上部に動画プレーヤーが表示されます。空欄なら非表示。
+   */
   youtubeId?: string;
   /**
    * 画像（任意・最大8枚。それぞれ説明文 caption を付けられます）
