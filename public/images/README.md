@@ -64,6 +64,7 @@
 | `youtsu-cat-stretch` | 腰痛ケア キャット&カウ |
 | `pelvic-tilt` | 骨盤前後運動 |
 | `bridge` | ブリッジ（お尻上げ） |
+| `dead-bug` | デッドバグ |
 
 ## フォルダ一覧（股関節・お尻）
 
@@ -72,6 +73,8 @@
 | `hip-flexor-stretch` | 腸腰筋ストレッチ |
 | `adductor-stretch` | 内転筋ストレッチ |
 | `piriformis-stretch` | お尻（梨状筋）ストレッチ |
+| `clamshell` | クラムシェル |
+| `side-leg-raise` | サイドレッグレイズ |
 | `glute-stretch` | 臀筋ストレッチ |
 
 ## フォルダ一覧（太もも・ふくらはぎ・足）
