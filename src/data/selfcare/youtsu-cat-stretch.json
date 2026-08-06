@@ -20,17 +20,21 @@
   "difficulty": 2,
   "symptoms": [
     "youtsu",
-    "sorigoshi"
+    "sorigoshi",
+    "nekoze"
   ],
   "parts": [
     "koshi",
     "senaka",
-    "kotsuban"
+    "kotsuban",
+    "taikan"
   ],
   "tags": [
     "ストレッチ",
+    "モビリティ",
     "腰",
-    "体幹"
+    "体幹",
+    "キャット&カウ"
   ],
   "popularity": 88
 }

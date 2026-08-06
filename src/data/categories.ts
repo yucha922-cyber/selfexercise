@@ -22,6 +22,8 @@ export const SYMPTOMS: Category[] = [
   { slug: "hizatsu", name: "膝痛" },
   { slug: "shijukata", name: "四十肩" },
   { slug: "gojukata", name: "五十肩" },
+  { slug: "mukumi", name: "むくみ・脚のだるさ" },
+  { slug: "sokuteikinmakuen", name: "足底筋膜炎" },
 ];
 
 // ② 部位別
@@ -33,8 +35,13 @@ export const PARTS: Category[] = [
   { slug: "koshi", name: "腰" },
   { slug: "kotsuban", name: "骨盤" },
   { slug: "kokansetsu", name: "股関節" },
+  { slug: "oshiri", name: "お尻" },
+  { slug: "futomomo", name: "太もも" },
   { slug: "hiza", name: "膝" },
+  { slug: "fukurahagi", name: "ふくらはぎ" },
   { slug: "ashikubi", name: "足首" },
+  { slug: "ashiura", name: "足裏" },
+  { slug: "taikan", name: "体幹" },
 ];
 
 export const symptomName = (slug: string): string =>
