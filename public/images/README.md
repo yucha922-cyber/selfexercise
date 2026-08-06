@@ -3,6 +3,9 @@
 各エクササイズの画像は、このフォルダ内の **エクササイズごとのフォルダ** に置くだけで、
 サイトに自動で表示されます（JSONファイルの編集は不要です）。
 
+動画（YouTube）を入れたい場合は `docs/youtube-guide.md` を参照してください。
+画像と動画は両方同時に設定できます。
+
 ## 基本の運用（1枚完結画像）
 
 解説・手順・注意点まで入った「1枚完結」の画像を、各フォルダに **1枚だけ**
@@ -33,7 +36,7 @@
 | `kubi-scm-stretch` | 胸鎖乳突筋ストレッチ |
 | `zutsu-neck-release` | 後頭下筋群リリース |
 | `kubi-thoracic-extension` | 胸椎伸展エクササイズ |
-| `kubi-towel-stretch` | タオル頚椎モビライゼーション |
+| `kubi-towel-stretch` | 首のタオルストレッチ |
 
 ## フォルダ一覧（肩こり）
 
@@ -43,8 +46,9 @@
 | `kata-lat-stretch` | 広背筋ストレッチ |
 | `kata-scapula-squeeze` | 肩甲骨寄せ運動 |
 | `kata-scapula-roll` | 肩甲骨回し |
-| `kata-banzai` | バンザイ体操 |
+| `kata-banzai` | タオルを使った肩・胸のストレッチ |
 | `kata-trap-stretch` | 僧帽筋ストレッチ |
+| `katakori-stretch` | 肩こり改善ストレッチ |
 
 ## フォルダ一覧（前腕・肘）
 
@@ -53,11 +57,22 @@
 | `zenwan-flexor-stretch` | 前腕屈筋群ストレッチ |
 | `zenwan-extensor-stretch` | 前腕伸筋群ストレッチ |
 
+## フォルダがまだ無いエクササイズ
+
+次の5本はフォルダを作っていません。画像を入れたくなったら、
+`public/images/` の中に下記の名前でフォルダを作ってから画像を置いてください。
+
+| フォルダ名 | エクササイズ |
+| --- | --- |
+| `nekoze-chest-open` | 猫背改善 胸ひらきエクササイズ |
+| `youtsu-cat-stretch` | 腰痛ケア キャット&カウ |
+| `kokansetsu-mobility` | 股関節まわりほぐし |
+| `gojukata-pendulum` | 四十肩・五十肩 振り子運動 |
+| `hiza-quad-set` | 膝痛予防 太もも強化（クアドセッティング） |
+
 ## 補足
 
 - 画像を差し替えるときは、同じファイル名で上書きするだけでOKです。
 - 並び順を変えたいときは、ファイル名の先頭の数字を変えてください。
-- JSONファイル（`src/data/selfcare/*.json`）の `images` に手書きで指定がある場合は、
-  そちらが優先されます（例: `katakori-stretch` は手書き指定のまま）。
-- 将来、動画に切り替える場合は JSON の `youtubeId` に YouTube の動画IDを入れると
-  ページ上部に動画が埋め込まれます。
+- JSONファイル（`src/data/selfcare/*.json`）の `images` に手書きでパスを指定した場合は、
+  フォルダの自動読み込みより、そちらが優先されます。

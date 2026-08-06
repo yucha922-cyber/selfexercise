@@ -8,6 +8,7 @@ import {
 } from "@/lib/selfcare";
 import { symptomName, partName } from "@/data/categories";
 import { SITE } from "@/lib/site";
+import { parseYoutubeId } from "@/lib/youtube";
 import Difficulty from "@/components/Difficulty";
 import FavoriteButton from "@/components/FavoriteButton";
 import SelfCareCard from "@/components/SelfCareCard";
@@ -42,6 +43,8 @@ export function generateMetadata({
 export default function SelfCarePage({ params }: { params: { slug: string } }) {
   const item = getSelfCareBySlug(params.slug);
   if (!item) notFound();
+
+  const videoId = parseYoutubeId(item.youtubeId);
 
   // 関連セルフケア（同じ症状か部位を持つもの）
   const related = getAllSelfCare()
@@ -100,12 +103,12 @@ export default function SelfCarePage({ params }: { params: { slug: string } }) {
         </span>
       </div>
 
-      {/* 動画 */}
-      {item.youtubeId && (
+      {/* 動画（JSONの youtubeId は動画ID・URLのどちらでもOK） */}
+      {videoId && (
         <div className="mt-6 aspect-video w-full overflow-hidden rounded-2xl bg-black">
           <iframe
             className="h-full w-full"
-            src={`https://www.youtube.com/embed/${item.youtubeId}`}
+            src={`https://www.youtube.com/embed/${videoId}`}
             title={item.title}
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
             allowFullScreen
