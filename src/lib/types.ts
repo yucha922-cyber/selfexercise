@@ -1,8 +1,15 @@
 export type SelfCareImage = {
   /** 画像パス 例: /images/shoulder/stretch1.jpg */
   src: string;
-  /** 画像の下に表示する説明文（任意） 例: 開始姿勢 */
+  /** 画像の下に表示する説明文（任意） 例: 肩が上がらないように */
   caption?: string;
+  /**
+   * 画像の役割ラベル（任意）。ファイル名から自動で決まります。
+   * start.jpg → 開始姿勢 / end.jpg → 終了姿勢 / ng.jpg → ダメな例
+   */
+  label?: string;
+  /** ok = 正しい例（緑の○） / ng = ダメな例（赤の×） */
+  kind?: "ok" | "ng";
 };
 
 export type SelfCare = {
@@ -25,7 +32,7 @@ export type SelfCare = {
    */
   youtubeId?: string;
   /**
-   * 画像（任意・最大8枚。それぞれ説明文 caption を付けられます）
+   * 画像（任意・最大8枚。基本は 開始姿勢／終了姿勢／ダメな例 の3枚構成）
    * 空の場合は public/images/<slug>/ フォルダ内の画像が自動で読み込まれます。
    */
   images?: SelfCareImage[];

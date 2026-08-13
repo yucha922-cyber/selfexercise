@@ -48,10 +48,59 @@ export default function ImageGallery({
 
   const current = openIndex !== null ? list[openIndex] : null;
 
+  // 役割ラベル付き（開始姿勢／終了姿勢／ダメな例）が1枚でもあれば、ラベル表示にする
+  const hasLabels = list.some((img) => img.label);
+
   return (
     <>
-      {/* 1枚のみのとき: 解説入りの「1枚完結画像」を想定し、切り抜かずに全幅表示 */}
-      {list.length === 1 ? (
+      {hasLabels ? (
+        /* 3枚構成: スマホは縦積み、PCは横3列。それぞれにラベルを表示する */
+        <ul className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+          {list.map((img, i) => (
+            <li key={i}>
+              <figure className="m-0 overflow-hidden rounded-xl border border-ink-100 bg-white">
+                {img.label && (
+                  <p
+                    className={`flex items-center justify-center gap-1.5 px-3 py-2 text-sm font-bold ${
+                      img.kind === "ng"
+                        ? "bg-red-50 text-red-700"
+                        : "bg-emerald-50 text-emerald-700"
+                    }`}
+                  >
+                    <span aria-hidden>{img.kind === "ng" ? "✕" : "○"}</span>
+                    {img.label}
+                  </p>
+                )}
+                <button
+                  type="button"
+                  onClick={() => setOpenIndex(i)}
+                  aria-label={`${img.label || img.caption || `画像${i + 1}`}を拡大表示`}
+                  className="group relative block aspect-[4/3] w-full overflow-hidden bg-cream-100"
+                >
+                  <Image
+                    src={withBasePath(img.src)}
+                    alt={`${title} ${img.label || ""} ${img.caption || ""}`.trim()}
+                    fill
+                    className="object-cover transition group-hover:scale-[1.03]"
+                    sizes="(max-width: 640px) 100vw, 33vw"
+                  />
+                  <span className="absolute bottom-1.5 right-1.5 rounded-md bg-ink-900/55 p-1 text-white opacity-90">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                      <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7" />
+                    </svg>
+                  </span>
+                </button>
+                {img.caption && (
+                  <figcaption className="px-3 py-2 text-center text-xs leading-snug text-ink-500">
+                    {img.caption}
+                  </figcaption>
+                )}
+              </figure>
+            </li>
+          ))}
+        </ul>
+      ) : list.length === 1 ? (
+        /* 1枚のみのとき: 解説入りの「1枚完結画像」を想定し、切り抜かずに全幅表示 */
         <figure className="m-0">
           <button
             type="button"

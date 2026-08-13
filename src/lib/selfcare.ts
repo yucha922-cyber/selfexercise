@@ -1,66 +1,116 @@
 import fs from "node:fs";
 import path from "node:path";
 import type { SelfCare, SelfCareImage } from "./types";
+import { parseSelfCare } from "./content";
 
 // セルフケアは「1エクササイズ＝1ファイル」で管理します。
-// src/data/selfcare/ フォルダ内の *.json をビルド時にすべて読み込みます。
-// 追加: 新しい .json を1つ置くだけ（コード変更不要）
+// src/data/selfcare/ フォルダ内の *.md をビルド時にすべて読み込みます。
+// 追加: 新しい .md を1つ置くだけ（コード変更不要）
 // 削除: そのファイルを消すだけ
-// ※ "_" や "." で始まるファイル（例: _template.json）は読み込みません。
+// ページのURLはファイル名になります（例: kata-chest-stretch.md → /selfcare/kata-chest-stretch/）
+// ※ "_" や "." で始まるファイル（例: _template.md）は読み込みません。
 const DIR = path.join(process.cwd(), "src", "data", "selfcare");
 
-// 画像は public/images/<slug>/ フォルダに置くだけで自動表示されます。
-// ・ファイル名の昇順で並びます（例: 01_xxx.jpg → 02_xxx.jpg …）
-// ・ファイル名の先頭の数字を除いた部分がキャプションになります
-//   例: 「01_開始姿勢.jpg」→ キャプション「開始姿勢」
-// ・JSON の images に手書きの指定がある場合はそちらが優先されます
+// 画像は public/images/<ファイル名と同じ名前>/ フォルダに置くだけで自動表示されます。
+//
+// 基本は次の3枚構成です（ファイル名で役割が決まります）。
+//   start.jpg → 「開始姿勢」
+//   end.jpg   → 「終了姿勢」
+//   ng.jpg    → 「ダメな例」
+// ファイル名のうしろに説明を足すと、画像の下に表示されます。
+//   例: ng_肩がすくんでいる.jpg → ダメな例／説明「肩がすくんでいる」
+//
+// 上記以外の名前のファイルは、役割ラベルなしでファイル名順に並びます
+// （解説を焼き込んだ1枚もの画像を置きたい場合など）。
 const IMAGES_DIR = path.join(process.cwd(), "public", "images");
 const IMAGE_EXTS = new Set([".jpg", ".jpeg", ".png", ".webp", ".gif", ".avif"]);
+
+type Role = { aliases: string[]; label: string; kind: "ok" | "ng" };
+
+// 表示はこの順番になります（ファイル名の順ではありません）
+const ROLES: Role[] = [
+  { aliases: ["start", "開始姿勢", "開始"], label: "開始姿勢", kind: "ok" },
+  { aliases: ["end", "終了姿勢", "終了"], label: "終了姿勢", kind: "ok" },
+  { aliases: ["ng", "ng例", "ダメな例", "だめな例"], label: "ダメな例", kind: "ng" },
+];
+
+/** ファイル名から役割と説明文を判定する。役割名でなければ null。 */
+function matchRole(base: string): { role: Role; caption: string } | null {
+  for (const role of ROLES) {
+    for (const alias of role.aliases) {
+      if (!base.toLowerCase().startsWith(alias.toLowerCase())) continue;
+      const rest = base.slice(alias.length);
+      // 役割名ちょうど、または「役割名 + 区切り + 説明」のときだけ採用する
+      if (rest === "" || /^[-_ 　]/.test(rest)) {
+        return { role, caption: rest.replace(/^[-_ 　]+/, "").trim() };
+      }
+    }
+  }
+  return null;
+}
 
 function loadImagesFromFolder(slug: string): SelfCareImage[] {
   const dir = path.join(IMAGES_DIR, slug);
   if (!fs.existsSync(dir)) return [];
-  return fs
+
+  const files = fs
     .readdirSync(dir)
     .filter(
-      (f) =>
-        !f.startsWith(".") && IMAGE_EXTS.has(path.extname(f).toLowerCase())
-    )
-    .sort((a, b) => a.localeCompare(b, "ja", { numeric: true }))
-    .map((f) => {
-      const base = path.basename(f, path.extname(f));
+      (f) => !f.startsWith(".") && IMAGE_EXTS.has(path.extname(f).toLowerCase())
+    );
+
+  const roleImages: SelfCareImage[] = [];
+  const otherImages: SelfCareImage[] = [];
+
+  files.forEach((f) => {
+    const base = path.basename(f, path.extname(f));
+    const src = `/images/${slug}/${f}`;
+    const matched = matchRole(base);
+    if (matched) {
+      roleImages.push({
+        src,
+        label: matched.role.label,
+        kind: matched.role.kind,
+        ...(matched.caption ? { caption: matched.caption } : {}),
+      });
+    } else {
+      // 役割なし: 先頭の数字を除いた部分を説明文として使う（例: 01_開始姿勢.jpg）
       const caption = base.replace(/^\d+[-_ ]*/, "").trim();
-      return {
-        src: `/images/${slug}/${f}`,
-        ...(caption ? { caption } : {}),
-      };
-    });
+      otherImages.push({ src, ...(caption ? { caption } : {}) });
+    }
+  });
+
+  // 開始姿勢 → 終了姿勢 → ダメな例 の順に並べる
+  roleImages.sort(
+    (a, b) =>
+      ROLES.findIndex((r) => r.label === a.label) -
+      ROLES.findIndex((r) => r.label === b.label)
+  );
+  otherImages.sort((a, b) => a.src.localeCompare(b.src, "ja", { numeric: true }));
+
+  return [...roleImages, ...otherImages];
 }
 
 function loadAll(): SelfCare[] {
   const files = fs
     .readdirSync(DIR)
-    .filter(
-      (f) =>
-        f.endsWith(".json") && !f.startsWith("_") && !f.startsWith(".")
-    )
+    .filter((f) => f.endsWith(".md") && !f.startsWith("_") && !f.startsWith("."))
     .sort();
 
   const items: SelfCare[] = files.map((file) => {
+    const slug = path.basename(file, ".md");
     const raw = fs.readFileSync(path.join(DIR, file), "utf-8");
-    try {
-      const item = JSON.parse(raw) as SelfCare;
-      // JSON に images の指定がなければ、public/images/<slug>/ から自動読み込み
-      if (!item.images || item.images.length === 0) {
-        item.images = loadImagesFromFolder(item.slug);
-      }
-      return item;
-    } catch (e) {
-      throw new Error(
-        `セルフケアのデータ読み込みに失敗しました: src/data/selfcare/${file}\n` +
-          `JSONの書式（カンマ・括弧など）を確認してください。\n${(e as Error).message}`
-      );
+    const item = parseSelfCare(raw, slug, `src/data/selfcare/${file}`);
+    item.images = loadImagesFromFolder(slug);
+    return item;
+  });
+
+  const seen = new Set<string>();
+  items.forEach((i) => {
+    if (seen.has(i.slug)) {
+      throw new Error(`セルフケアのファイル名が重複しています: ${i.slug}`);
     }
+    seen.add(i.slug);
   });
 
   // 表示順: order 昇順 → 同じなら popularity 降順 → title
