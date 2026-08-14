@@ -5,6 +5,7 @@ import Link from "next/link";
 import { analyzeImages, type AnalysisResult } from "@/lib/poseAnalysis";
 import BookingCTA from "./BookingCTA";
 import PoseOverlay from "./PoseOverlay";
+import ShootingGuide from "./ShootingGuide";
 
 type Slot = "front" | "side";
 
@@ -61,29 +62,37 @@ export default function PostureAnalyzer() {
 
   return (
     <div>
+      {/* ① 撮り方の説明（アップロードの前に読んでもらう） */}
+      <ShootingGuide />
+
+      {/* ② 写真をアップロード */}
       <div className="rounded-2xl border border-ink-100 bg-white p-5 shadow-soft">
-        <p className="flex items-center gap-2 text-sm font-medium text-accent-700">
+        <h2 className="font-serif text-base font-bold text-ink-900">
+          撮った写真をアップロード
+        </h2>
+        <p className="mt-2 flex items-center gap-2 text-sm font-medium text-accent-700">
           <span className="flex h-6 w-6 items-center justify-center rounded-full bg-brand-50 text-xs">🔒</span>
           写真は端末内だけで解析され、サーバーには送信されません。
         </p>
 
         <div className="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-2">
           <UploadSlot
-            label="正面の写真"
-            hint="まっすぐ立った正面（左右バランス用）"
+            label="① 正面の写真"
+            hint="カメラをまっすぐ見て、全身が入るように"
             preview={previews.front}
             onPick={(f) => onPick("front", f)}
           />
           <UploadSlot
-            label="側面の写真"
-            hint="横向きに立った全身（猫背・巻き肩用）"
+            label="② 側面の写真"
+            hint="体を真横（90度）に向けて、全身が入るように"
             preview={previews.side}
             onPick={(f) => onPick("side", f)}
           />
         </div>
 
         <p className="mt-4 text-xs leading-relaxed text-ink-400">
-          全身がはっきり写った写真をご用意ください。正面・側面の両方があるとより詳しく分析できます（片方だけでも可）。
+          頭のてっぺんから足先まで入った写真をご用意ください。
+          正面・側面の両方があるとより詳しく分析できます（片方だけでも分析できます）。
         </p>
 
         <button

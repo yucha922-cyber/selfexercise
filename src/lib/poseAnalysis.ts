@@ -132,8 +132,21 @@ function analyzeSide(keypoints: KP[]) {
   const shoulder = pick("left_shoulder", "right_shoulder");
   const hip = pick("left_hip", "right_hip");
   const knee = pick("left_knee", "right_knee");
+  const ankle = pick("left_ankle", "right_ankle");
 
   const items: ScoreItem[] = [];
+
+  // 重心ライン: 耳とくるぶしを結ぶ線が床に対して垂直か
+  // （耳・肩・股関節・くるぶしが一直線に並ぶのが理想的な立位）
+  if (ear && ankle) {
+    const tilt = tiltFromVertical(ear.x - ankle.x, ear.y - ankle.y);
+    items.push({
+      key: "plumbLine",
+      label: "重心ライン（耳〜くるぶし）",
+      score: clampScore(100 - (tilt - 3) * 6),
+      level: "good",
+    });
+  }
 
   // 頭部前方変位: 耳と肩の水平ズレ
   if (ear && shoulder) {
@@ -204,6 +217,8 @@ function analyzeFront(keypoints: KP[]): ScoreItem[] {
 
 // 改善ポイント（来院を促す文言。セルフケア詳細は出さない）
 const POINT_MESSAGES: Record<string, string> = {
+  plumbLine:
+    "耳からくるぶしを結ぶ体の軸が前後にずれ、重心が偏りやすい傾向です。",
   forwardHead: "頭が前に出やすく、首や肩に負担がかかりやすい姿勢の傾向です。",
   kyphosis: "背中が丸まりやすく、肩こり・呼吸の浅さにつながりやすい傾向です。",
   roundedShoulder: "肩が前に入りやすく、巻き肩の傾向がみられます。",
@@ -242,7 +257,8 @@ export async function analyzeImages(
         points: [],
         poses: [],
         error:
-          "姿勢を読み取れませんでした。全身がはっきり写った写真で再度お試しください。",
+          "姿勢を読み取れませんでした。頭のてっぺんから足先まで全身が入るように、" +
+          "スマホを腰の高さに置いて3〜4歩下がって撮り直してみてください。",
       };
     }
 

@@ -28,8 +28,8 @@ export default function AnalysisPage() {
           AI姿勢分析
         </h1>
         <p className="mt-2 text-sm leading-relaxed text-ink-500">
-          正面・側面の写真から、あなたの姿勢の傾向をその場でチェック。
-          気になる結果は、来院でしっかり改善しましょう。
+          正面・側面の写真から、耳・肩・股関節・くるぶしの位置をAIが読み取り、
+          姿勢の傾向を点数でチェックします。ご自宅で一人でも撮影できます。
         </p>
       </div>
       <PostureAnalyzer />
