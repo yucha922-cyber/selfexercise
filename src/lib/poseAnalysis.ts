@@ -19,42 +19,126 @@ const POSE_URL =
 
 let detectorPromise: Promise<any> | null = null;
 
+/** 失敗の種類。画面のメッセージを出し分けるために使う。 */
+export type FailureKind =
+  | "network" // 解析エンジンをダウンロードできない（通信・アプリ内ブラウザなど）
+  | "unsupported" // 端末・ブラウザが対応していない（WebGLなし・メモリ不足）
+  | "photo"; // エンジンは動いたが、写真から姿勢を読み取れなかった
+
+class EngineError extends Error {
+  kind: FailureKind;
+  constructor(kind: FailureKind, message: string) {
+    super(message);
+    this.kind = kind;
+  }
+}
+
+/** WebGL（GPU描画）が使えるか。使えない端末では解析が動かない。 */
+export function hasWebGL(): boolean {
+  if (typeof document === "undefined") return false;
+  try {
+    const c = document.createElement("canvas");
+    return !!(c.getContext("webgl2") || c.getContext("webgl"));
+  } catch {
+    return false;
+  }
+}
+
+/** LINEやInstagramなどのアプリ内ブラウザか（外部ファイルの読み込みが制限されることがある） */
+const IN_APP_BROWSERS: { re: RegExp; name: string }[] = [
+  { re: /Line\//i, name: "LINE" },
+  { re: /Instagram/i, name: "Instagram" },
+  { re: /FBAN|FBAV|FB_IAB/i, name: "Facebook" },
+  { re: /TikTok|BytedanceWebview|musical_ly/i, name: "TikTok" },
+  { re: /Twitter/i, name: "X（Twitter）" },
+];
+
+export function detectInAppBrowser(): string | null {
+  if (typeof navigator === "undefined") return null;
+  const ua = navigator.userAgent || "";
+  return IN_APP_BROWSERS.find((b) => b.re.test(ua))?.name ?? null;
+}
+
+export type EnvCheck = {
+  /** 解析を実行できる見込みがあるか */
+  ok: boolean;
+  /** アプリ内ブラウザ名（該当する場合） */
+  inAppBrowser: string | null;
+  /** WebGLが使えるか */
+  webgl: boolean;
+};
+
+/** ページを開いた時点で、この端末で解析できそうかを判定する。 */
+export function checkEnvironment(): EnvCheck {
+  const inAppBrowser = detectInAppBrowser();
+  const webgl = hasWebGL();
+  return { ok: webgl && !inAppBrowser, inAppBrowser, webgl };
+}
+
 function loadScript(src: string): Promise<void> {
   return new Promise((resolve, reject) => {
-    if (document.querySelector(`script[src="${src}"]`)) return resolve();
+    const existing = document.querySelector<HTMLScriptElement>(
+      `script[src="${src}"]`
+    );
+    // 前回失敗して残っているタグは取り除いてから読み込み直す
+    if (existing) {
+      if (existing.dataset.loaded === "1") return resolve();
+      existing.remove();
+    }
     const s = document.createElement("script");
     s.src = src;
     s.async = true;
-    s.onload = () => resolve();
-    s.onerror = () => reject(new Error(`読み込み失敗: ${src}`));
+    s.onload = () => {
+      s.dataset.loaded = "1";
+      resolve();
+    };
+    s.onerror = () =>
+      reject(new EngineError("network", `読み込み失敗: ${src}`));
     document.head.appendChild(s);
   });
 }
 
-async function getDetector(): Promise<any> {
-  if (detectorPromise) return detectorPromise;
-  detectorPromise = (async () => {
-    await loadScript(TFJS_URL);
-    await loadScript(POSE_URL);
-    const tf = window.tf;
-    const pd = window.poseDetection;
-    if (!tf || !pd) throw new Error("解析エンジンの初期化に失敗しました");
-    await tf.ready();
-    // 立位の全身（脚・足まで）検出に強い BlazePose を優先。
-    // 失敗時は MoveNet(Thunder) にフォールバック。
+async function createDetector(): Promise<any> {
+  if (!hasWebGL()) {
+    throw new EngineError("unsupported", "WebGLが利用できません");
+  }
+  await loadScript(TFJS_URL);
+  await loadScript(POSE_URL);
+  const tf = window.tf;
+  const pd = window.poseDetection;
+  if (!tf || !pd) {
+    throw new EngineError("network", "解析エンジンの初期化に失敗しました");
+  }
+  await tf.ready();
+  // 立位の全身（脚・足まで）検出に強い BlazePose を優先。
+  // 失敗時は MoveNet(Thunder) にフォールバック。
+  try {
+    return await pd.createDetector(pd.SupportedModels.BlazePose, {
+      runtime: "tfjs",
+      modelType: "full",
+      enableSmoothing: false,
+    });
+  } catch {
     try {
-      return await pd.createDetector(pd.SupportedModels.BlazePose, {
-        runtime: "tfjs",
-        modelType: "full",
-        enableSmoothing: false,
-      });
-    } catch {
       return await pd.createDetector(pd.SupportedModels.MoveNet, {
         modelType: pd.movenet.modelType.SINGLEPOSE_THUNDER,
       });
+    } catch {
+      // モデル本体のダウンロードに失敗した場合もここに来る
+      throw new EngineError("network", "モデルを読み込めませんでした");
     }
-  })();
-  return detectorPromise;
+  }
+}
+
+async function getDetector(): Promise<any> {
+  if (!detectorPromise) detectorPromise = createDetector();
+  try {
+    return await detectorPromise;
+  } catch (e) {
+    // 失敗した結果を残さない。通信が回復すれば次回やり直せるようにする。
+    detectorPromise = null;
+    throw e;
+  }
 }
 
 // 検出点の採用しきい値（低いほど多くの点を表示）
@@ -87,6 +171,8 @@ export type AnalysisResult = {
   /** 写真ごとの検出キーポイント（オーバーレイ描画用） */
   poses: PoseOnImage[];
   error?: string;
+  /** 失敗の種類（画面のメッセージ・案内の出し分け用） */
+  errorKind?: FailureKind;
 };
 
 function kp(keypoints: KP[], name: string): KP | undefined {
@@ -109,14 +195,18 @@ function levelOf(score: number): ScoreItem["level"] {
   return "alert";
 }
 
-async function detect(img: HTMLImageElement): Promise<KP[] | null> {
+/** 1枚の写真から姿勢を検出する。写真から読み取れないときだけ null を返す。 */
+async function detect(
+  detector: any,
+  img: HTMLImageElement
+): Promise<KP[] | null> {
   try {
-    const detector = await getDetector();
     const poses = await detector.estimatePoses(img, { flipHorizontal: false });
     if (!poses || poses.length === 0) return null;
     return poses[0].keypoints as KP[];
   } catch {
-    return null;
+    // 推論中の失敗はほぼメモリ不足。端末側の問題として扱う。
+    throw new EngineError("unsupported", "解析中にエラーが発生しました");
   }
 }
 
@@ -230,19 +320,47 @@ export async function analyzeImages(
   front: HTMLImageElement | null,
   side: HTMLImageElement | null
 ): Promise<AnalysisResult> {
+  const fail = (kind: FailureKind, error: string): AnalysisResult => ({
+    detected: false,
+    overall: 0,
+    items: [],
+    points: [],
+    poses: [],
+    error,
+    errorKind: kind,
+  });
+
+  // ① 解析エンジンの準備（ここでの失敗は写真ではなく端末・通信が原因）
+  let detector: any;
+  try {
+    detector = await getDetector();
+  } catch (e) {
+    const kind = e instanceof EngineError ? e.kind : "network";
+    return kind === "unsupported"
+      ? fail(
+          "unsupported",
+          "お使いの端末では姿勢分析を実行できませんでした。別のスマートフォンやパソコンでお試しください。"
+        )
+      : fail(
+          "network",
+          "解析に必要なデータをダウンロードできませんでした。写真は問題ありません。"
+        );
+  }
+
+  // ② 写真の解析
   try {
     const items: ScoreItem[] = [];
     const poses: PoseOnImage[] = [];
 
     if (side) {
-      const k = await detect(side);
+      const k = await detect(detector, side);
       if (k) {
         items.push(...analyzeSide(k));
         poses.push({ slot: "side", keypoints: k });
       }
     }
     if (front) {
-      const k = await detect(front);
+      const k = await detect(detector, front);
       if (k) {
         items.push(...analyzeFront(k));
         poses.push({ slot: "front", keypoints: k });
@@ -250,16 +368,11 @@ export async function analyzeImages(
     }
 
     if (items.length === 0) {
-      return {
-        detected: false,
-        overall: 0,
-        items: [],
-        points: [],
-        poses: [],
-        error:
-          "姿勢を読み取れませんでした。頭のてっぺんから足先まで全身が入るように、" +
-          "スマホを腰の高さに置いて3〜4歩下がって撮り直してみてください。",
-      };
+      return fail(
+        "photo",
+        "写真から姿勢を読み取れませんでした。頭のてっぺんから足先まで全身が入るように、" +
+          "スマホを腰の高さに置いて3〜4歩下がって撮り直してみてください。"
+      );
     }
 
     // レベル付与
@@ -279,14 +392,11 @@ export async function analyzeImages(
 
     return { detected: true, overall, items, points, poses };
   } catch (e) {
-    return {
-      detected: false,
-      overall: 0,
-      items: [],
-      points: [],
-      poses: [],
-      error:
-        "解析エンジンを読み込めませんでした。通信環境の良い場所で再度お試しください。",
-    };
+    const kind = e instanceof EngineError ? e.kind : "unsupported";
+    return fail(
+      kind,
+      "解析中にエラーが発生しました。写真の枚数を1枚に減らすか、" +
+        "他のアプリを閉じてから再度お試しください。"
+    );
   }
 }
