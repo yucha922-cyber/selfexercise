@@ -1,8 +1,14 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
-import { analyzeImages, type AnalysisResult } from "@/lib/poseAnalysis";
+import {
+  analyzeImages,
+  checkEnvironment,
+  detectInAppBrowser,
+  type AnalysisResult,
+  type EnvCheck,
+} from "@/lib/poseAnalysis";
 import BookingCTA from "./BookingCTA";
 import PoseOverlay from "./PoseOverlay";
 import ShootingGuide from "./ShootingGuide";
@@ -30,12 +36,29 @@ export default function PostureAnalyzer() {
   });
   const [status, setStatus] = useState<"idle" | "analyzing" | "done">("idle");
   const [result, setResult] = useState<AnalysisResult | null>(null);
+  const [pickError, setPickError] = useState<string | null>(null);
+  const [env, setEnv] = useState<EnvCheck | null>(null);
+
+  // 端末が対応しているかは、ページを開いた時点で判定して先に案内する
+  useEffect(() => {
+    setEnv(checkEnvironment());
+  }, []);
 
   const onPick = async (slot: Slot, file?: File) => {
     if (!file) return;
-    const img = await loadImage(file);
-    setImgs((p) => ({ ...p, [slot]: img }));
-    setPreviews((p) => ({ ...p, [slot]: img.src }));
+    setPickError(null);
+    try {
+      const img = await loadImage(file);
+      setImgs((p) => ({ ...p, [slot]: img }));
+      setPreviews((p) => ({ ...p, [slot]: img.src }));
+    } catch {
+      // iPhoneのHEIC形式など、ブラウザが開けない画像のとき
+      setPickError(
+        "この写真を開けませんでした。iPhoneで撮った写真をパソコンやAndroidに移した場合、" +
+          "形式（HEIC）が対応していないことがあります。" +
+          "撮影した端末から直接お試しいただくか、JPEGで保存し直してからお選びください。"
+      );
+    }
   };
 
   const canAnalyze = imgs.front || imgs.side;
@@ -57,11 +80,21 @@ export default function PostureAnalyzer() {
   };
 
   if (status === "done" && result) {
-    return <ResultView result={result} previews={previews} onReset={reset} />;
+    return (
+      <ResultView
+        result={result}
+        previews={previews}
+        onReset={reset}
+        onRetry={run}
+      />
+    );
   }
 
   return (
     <div>
+      {/* 端末が非対応の可能性がある場合の事前案内 */}
+      {env && !env.ok && <EnvNotice env={env} />}
+
       {/* ① 撮り方の説明（アップロードの前に読んでもらう） */}
       <ShootingGuide />
 
@@ -90,6 +123,12 @@ export default function PostureAnalyzer() {
           />
         </div>
 
+        {pickError && (
+          <p className="mt-4 rounded-xl bg-brand-50 p-3 text-sm leading-relaxed text-brand-700">
+            {pickError}
+          </p>
+        )}
+
         <p className="mt-4 text-xs leading-relaxed text-ink-400">
           頭のてっぺんから足先まで入った写真をご用意ください。
           正面・側面の両方があるとより詳しく分析できます（片方だけでも分析できます）。
@@ -107,6 +146,39 @@ export default function PostureAnalyzer() {
 
       <p className="mt-4 text-center text-xs text-ink-400">
         ※ 本分析は簡易的な目安です。正確な評価と改善は来院時に専門家が行います。
+      </p>
+    </div>
+  );
+}
+
+/** アプリ内ブラウザ・非対応端末への事前案内 */
+function EnvNotice({ env }: { env: EnvCheck }) {
+  if (env.inAppBrowser) {
+    return (
+      <div className="mb-6 rounded-2xl border border-gold-300 bg-gold-50 p-5">
+        <p className="text-sm font-bold text-ink-900">
+          {env.inAppBrowser}のアプリ内で開いています
+        </p>
+        <p className="mt-2 text-sm leading-relaxed text-ink-700">
+          この画面のままだと、姿勢分析に必要なデータを読み込めず、分析できないことがあります。
+          お手数ですが、<strong>SafariまたはChromeで開き直して</strong>ください。
+        </p>
+        <ul className="mt-3 space-y-1 text-sm leading-relaxed text-ink-600">
+          <li>iPhone：画面右下（または右上）の「…」→「Safariで開く」</li>
+          <li>Android：画面右上の「⋮」→「ブラウザで開く」</li>
+        </ul>
+      </div>
+    );
+  }
+  return (
+    <div className="mb-6 rounded-2xl border border-gold-300 bg-gold-50 p-5">
+      <p className="text-sm font-bold text-ink-900">
+        お使いの端末では分析できない可能性があります
+      </p>
+      <p className="mt-2 text-sm leading-relaxed text-ink-700">
+        姿勢分析に必要な機能（WebGL）が利用できません。
+        ブラウザを最新版に更新するか、別のスマートフォンやパソコンでお試しください。
+        撮影や他のページはそのままご利用いただけます。
       </p>
     </div>
   );
@@ -152,23 +224,96 @@ function ResultView({
   result,
   previews,
   onReset,
+  onRetry,
 }: {
   result: AnalysisResult;
   previews: Record<Slot, string | null>;
   onReset: () => void;
+  /** 写真はそのままで、解析だけやり直す */
+  onRetry: () => void;
 }) {
   const slotLabel: Record<Slot, string> = { front: "正面", side: "側面" };
   if (!result.detected) {
+    const inApp = detectInAppBrowser();
     return (
-      <div className="rounded-2xl border border-ink-100 bg-white p-6 text-center shadow-soft">
-        <p className="text-sm text-ink-600">{result.error}</p>
-        <button
-          type="button"
-          onClick={onReset}
-          className="mt-5 rounded-full bg-ink-800 px-6 py-3 text-sm font-bold text-white"
-        >
-          もう一度試す
-        </button>
+      <div className="rounded-2xl border border-ink-100 bg-white p-6 shadow-soft">
+        <p className="text-sm font-bold text-ink-900">
+          {result.errorKind === "photo"
+            ? "写真から姿勢を読み取れませんでした"
+            : "分析を実行できませんでした"}
+        </p>
+        <p className="mt-2 text-sm leading-relaxed text-ink-600">{result.error}</p>
+
+        {/* 通信が原因のとき: アプリ内ブラウザの可能性を案内 */}
+        {result.errorKind === "network" && (
+          <div className="mt-4 rounded-xl bg-cream-100 p-4 text-sm leading-relaxed text-ink-700">
+            <p className="font-bold">次のことをお試しください</p>
+            <ul className="mt-2 space-y-1.5">
+              {inApp && (
+                <li>
+                  {inApp}のアプリ内で開いています。右の「…」や「⋮」から
+                  <strong>SafariまたはChromeで開き直す</strong>と解決することが多いです。
+                </li>
+              )}
+              <li>Wi-Fiや電波の良い場所で、もう一度お試しください。</li>
+              <li>通信の節約モード（省データモード）をオフにしてください。</li>
+            </ul>
+          </div>
+        )}
+
+        {/* 端末が原因のとき */}
+        {result.errorKind === "unsupported" && (
+          <div className="mt-4 rounded-xl bg-cream-100 p-4 text-sm leading-relaxed text-ink-700">
+            <p className="font-bold">次のことをお試しください</p>
+            <ul className="mt-2 space-y-1.5">
+              <li>他のアプリやタブを閉じてから、もう一度お試しください。</li>
+              <li>写真を1枚（側面のみ）にすると動くことがあります。</li>
+              <li>ブラウザを最新版に更新するか、別の端末でお試しください。</li>
+            </ul>
+          </div>
+        )}
+
+        {/* 写真が原因のとき */}
+        {result.errorKind === "photo" && (
+          <div className="mt-4 rounded-xl bg-cream-100 p-4 text-sm leading-relaxed text-ink-700">
+            <p className="font-bold">撮り直しのポイント</p>
+            <ul className="mt-2 space-y-1.5">
+              <li>頭のてっぺんから足先まで、全身が画面に入っていますか。</li>
+              <li>スマホは腰の高さ（70〜80cm）に置きましたか。</li>
+              <li>背景に人や物が多く写っていませんか。</li>
+            </ul>
+          </div>
+        )}
+
+        <div className="mt-5 flex flex-col gap-2 sm:flex-row sm:justify-center">
+          {result.errorKind === "photo" ? (
+            <button
+              type="button"
+              onClick={onReset}
+              className="rounded-full bg-ink-800 px-6 py-3 text-sm font-bold text-white"
+            >
+              写真を選び直す
+            </button>
+          ) : (
+            <>
+              {/* 同じ写真のまま、もう一度エンジンの読み込みからやり直す */}
+              <button
+                type="button"
+                onClick={onRetry}
+                className="rounded-full bg-ink-800 px-6 py-3 text-sm font-bold text-white"
+              >
+                もう一度実行する
+              </button>
+              <button
+                type="button"
+                onClick={onReset}
+                className="rounded-full border border-ink-200 px-6 py-3 text-sm font-bold text-ink-700"
+              >
+                写真を選び直す
+              </button>
+            </>
+          )}
+        </div>
       </div>
     );
   }
