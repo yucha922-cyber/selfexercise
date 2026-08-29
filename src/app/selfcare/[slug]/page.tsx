@@ -103,12 +103,17 @@ export default function SelfCarePage({ params }: { params: { slug: string } }) {
         </span>
       </div>
 
-      {/* 動画（JSONの youtubeId は動画ID・URLのどちらでもOK） */}
+      {/* 動画（.md の youtube: は動画ID・URLのどちらでもOK）
+          rel=0        再生後・一時停止時に出る関連動画を同じチャンネル内に限定する
+                       （院と無関係な動画がページ内に出るのを防ぐため）
+          playsinline=1 iPhone で全画面に切り替わらず、ページ内でそのまま再生する
+          ※ タイトルと投稿者名の非表示は、YouTube 側が showinfo（2018年廃止）と
+            modestbranding（2023年廃止）を削除したため、現在は指定できません */}
       {videoId && (
         <div className="mt-6 aspect-video w-full overflow-hidden rounded-2xl bg-black">
           <iframe
             className="h-full w-full"
-            src={`https://www.youtube.com/embed/${videoId}`}
+            src={`https://www.youtube.com/embed/${videoId}?rel=0&playsinline=1`}
             title={item.title}
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
             allowFullScreen
