@@ -7,7 +7,7 @@ symptoms: kubikori, straightneck
 parts: kubi
 tags: ストレッチ, 首, スマホ首
 popularity: 62
-youtube:
+youtube: https://youtu.be/tjpsv7rgWtY
 ---
 
 ## 目的

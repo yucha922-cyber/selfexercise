@@ -7,7 +7,7 @@ symptoms: katakori
 parts: kata, senaka
 tags: ストレッチ, 脇, 背中
 popularity: 55
-youtube:
+youtube: https://youtu.be/vfhLKQuDgEg
 ---
 
 ## 目的

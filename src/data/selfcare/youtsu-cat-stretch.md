@@ -7,7 +7,7 @@ symptoms: youtsu, sorigoshi, nekoze
 parts: koshi, senaka, kotsuban, taikan
 tags: ストレッチ, モビリティ, 腰, 体幹, キャット&カウ
 popularity: 88
-youtube:
+youtube: https://youtu.be/p3i3BJf2bbM
 ---
 
 ## 目的
