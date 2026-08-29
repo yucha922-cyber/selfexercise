@@ -7,7 +7,7 @@ symptoms: katakori, nekoze
 parts: kata
 tags: ストレッチ, 胸, 巻き肩
 popularity: 68
-youtube:
+youtube: https://youtu.be/e130kMwBH6A
 ---
 
 ## 目的
