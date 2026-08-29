@@ -7,7 +7,7 @@ symptoms: katakori, nekoze
 parts: kata, senaka
 tags: ストレッチ, タオル, 肩甲骨, 呼吸
 popularity: 60
-youtube:
+youtube: https://youtu.be/_wWm-RYbRHc
 ---
 
 ## 目的

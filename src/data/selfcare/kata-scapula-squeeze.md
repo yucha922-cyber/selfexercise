@@ -7,7 +7,7 @@ symptoms: katakori, nekoze
 parts: kata, senaka
 tags: エクササイズ, 肩甲骨, 姿勢, 壁エンジェル
 popularity: 66
-youtube:
+youtube: https://youtu.be/fHUR9gt9i1w
 ---
 
 ## 目的

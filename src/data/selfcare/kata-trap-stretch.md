@@ -7,7 +7,7 @@ symptoms: katakori, kubikori
 parts: kata, kubi
 tags: ストレッチ, 僧帽筋, デスクワーク
 popularity: 65
-youtube:
+youtube: https://youtu.be/SYPFOuJpcjc
 ---
 
 ## 目的
