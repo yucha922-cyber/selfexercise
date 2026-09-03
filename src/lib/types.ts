@@ -6,10 +6,14 @@ export type SelfCareImage = {
   /**
    * 画像の役割ラベル（任意）。ファイル名から自動で決まります。
    * start.jpg → 開始姿勢 / end.jpg → 終了姿勢 / ng.jpg → ダメな例
+   * step1.jpg → ① / step2.jpg → ②（順番にくり返すエクササイズ用）
    */
   label?: string;
-  /** ok = 正しい例（緑の○） / ng = ダメな例（赤の×） */
-  kind?: "ok" | "ng";
+  /**
+   * ok = 正しい例（緑の○） / ng = ダメな例（赤の×）
+   * step = くり返す動作の1コマ（番号付き。開始・終了ではなく順番で見せる）
+   */
+  kind?: "ok" | "ng" | "step";
 };
 
 export type SelfCare = {

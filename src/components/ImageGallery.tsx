@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Image from "next/image";
 import type { SelfCareImage } from "@/lib/types";
 import { withBasePath } from "@/lib/path";
 
@@ -48,57 +47,84 @@ export default function ImageGallery({
 
   const current = openIndex !== null ? list[openIndex] : null;
 
-  // 役割ラベル付き（開始姿勢／終了姿勢／ダメな例）が1枚でもあれば、ラベル表示にする
+  // 役割ラベル付き（開始姿勢／終了姿勢／ダメな例／手順①②）が1枚でもあればラベル表示にする
   const hasLabels = list.some((img) => img.label);
+
+  // 手順（step1.jpg…）で構成された種目は、①→② の順にくり返す案内を出す
+  const stepMarks = list
+    .filter((img) => img.kind === "step")
+    .map((img) => img.label);
+
+  // 写真は切り抜かないため高さがそろわない。枚数に応じて列数を決める
+  const gridCols =
+    list.length === 2 || list.length === 4 ? "sm:grid-cols-2" : "sm:grid-cols-3";
 
   return (
     <>
       {hasLabels ? (
-        /* 3枚構成: スマホは縦積み、PCは横3列。それぞれにラベルを表示する */
-        <ul className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-          {list.map((img, i) => (
-            <li key={i}>
-              <figure className="m-0 overflow-hidden rounded-xl border border-ink-100 bg-white">
-                {img.label && (
-                  <p
-                    className={`flex items-center justify-center gap-1.5 px-3 py-2 text-sm font-bold ${
-                      img.kind === "ng"
-                        ? "bg-red-50 text-red-700"
-                        : "bg-emerald-50 text-emerald-700"
-                    }`}
+        /* ラベル付き: スマホは縦積み、PCは横並び。写真は切り抜かず全体を表示する */
+        <>
+          <ul className={`grid grid-cols-1 items-start gap-4 ${gridCols}`}>
+            {list.map((img, i) => (
+              <li key={i}>
+                <figure className="m-0 overflow-hidden rounded-xl border border-ink-100 bg-white">
+                  {img.label && (
+                    <p
+                      className={`flex items-center justify-center gap-1.5 px-3 py-2 text-sm font-bold ${
+                        img.kind === "ng"
+                          ? "bg-red-50 text-red-700"
+                          : img.kind === "step"
+                            ? "bg-brand-50 text-brand-700"
+                            : "bg-emerald-50 text-emerald-700"
+                      }`}
+                    >
+                      {img.kind !== "step" && (
+                        <span aria-hidden>{img.kind === "ng" ? "✕" : "○"}</span>
+                      )}
+                      {img.label}
+                      {/* 手順は「① 背中を丸める」のように番号の横に説明を出す */}
+                      {img.kind === "step" && img.caption && (
+                        <span className="font-normal">{img.caption}</span>
+                      )}
+                    </p>
+                  )}
+                  <button
+                    type="button"
+                    onClick={() => setOpenIndex(i)}
+                    aria-label={`${img.label || img.caption || `画像${i + 1}`}を拡大表示`}
+                    className="group relative block w-full overflow-hidden bg-cream-100"
                   >
-                    <span aria-hidden>{img.kind === "ng" ? "✕" : "○"}</span>
-                    {img.label}
-                  </p>
-                )}
-                <button
-                  type="button"
-                  onClick={() => setOpenIndex(i)}
-                  aria-label={`${img.label || img.caption || `画像${i + 1}`}を拡大表示`}
-                  className="group relative block aspect-[4/3] w-full overflow-hidden bg-cream-100"
-                >
-                  <Image
-                    src={withBasePath(img.src)}
-                    alt={`${title} ${img.label || ""} ${img.caption || ""}`.trim()}
-                    fill
-                    className="object-cover transition group-hover:scale-[1.03]"
-                    sizes="(max-width: 640px) 100vw, 33vw"
-                  />
-                  <span className="absolute bottom-1.5 right-1.5 rounded-md bg-ink-900/55 p-1 text-white opacity-90">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
-                      <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7" />
-                    </svg>
-                  </span>
-                </button>
-                {img.caption && (
-                  <figcaption className="px-3 py-2 text-center text-xs leading-snug text-ink-500">
-                    {img.caption}
-                  </figcaption>
-                )}
-              </figure>
-            </li>
-          ))}
-        </ul>
+                    {/* 切り抜くと姿勢が分からなくなるため、写真は全体をそのまま表示する */}
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={withBasePath(img.src)}
+                      alt={`${title} ${img.label || ""} ${img.caption || ""}`.trim()}
+                      loading="lazy"
+                      decoding="async"
+                      className="h-auto w-full transition group-hover:scale-[1.02]"
+                    />
+                    <span className="absolute bottom-1.5 right-1.5 rounded-md bg-ink-900/55 p-1 text-white opacity-90">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                        <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7" />
+                      </svg>
+                    </span>
+                  </button>
+                  {/* 手順の説明は上のラベルに出しているので、ここでは繰り返さない */}
+                  {img.caption && img.kind !== "step" && (
+                    <figcaption className="px-3 py-2 text-center text-xs leading-snug text-ink-500">
+                      {img.caption}
+                    </figcaption>
+                  )}
+                </figure>
+              </li>
+            ))}
+          </ul>
+          {stepMarks.length > 1 && (
+            <p className="mt-4 rounded-xl bg-brand-50 px-4 py-3 text-center text-sm font-bold text-brand-700">
+              {stepMarks.join(" → ")} の順に、くり返し行いましょう。
+            </p>
+          )}
+        </>
       ) : list.length === 1 ? (
         /* 1枚のみのとき: 解説入りの「1枚完結画像」を想定し、切り抜かずに全幅表示 */
         <figure className="m-0">
@@ -128,7 +154,7 @@ export default function ImageGallery({
           )}
         </figure>
       ) : (
-      <ul className="grid grid-cols-2 gap-3 sm:grid-cols-3">
+      <ul className={`grid grid-cols-1 items-start gap-3 ${gridCols}`}>
         {list.map((img, i) => (
           <li key={i}>
             <figure className="m-0">
@@ -136,14 +162,16 @@ export default function ImageGallery({
                 type="button"
                 onClick={() => setOpenIndex(i)}
                 aria-label={`${img.caption || `画像${i + 1}`}を拡大表示`}
-                className="card-hover group relative block aspect-[4/3] w-full overflow-hidden rounded-xl border border-ink-100 bg-cream-100"
+                className="card-hover group relative block w-full overflow-hidden rounded-xl border border-ink-100 bg-cream-100"
               >
-                <Image
+                {/* 切り抜くと解説が読めなくなるため、画像は全体をそのまま表示する */}
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
                   src={withBasePath(img.src)}
                   alt={img.caption || `${title} 参考画像 ${i + 1}`}
-                  fill
-                  className="object-cover transition group-hover:scale-[1.03]"
-                  sizes="(max-width: 640px) 50vw, 33vw"
+                  loading="lazy"
+                  decoding="async"
+                  className="h-auto w-full transition group-hover:scale-[1.02]"
                 />
                 {/* 拡大アイコン */}
                 <span className="absolute bottom-1.5 right-1.5 rounded-md bg-ink-900/55 p-1 text-white opacity-90">
@@ -193,9 +221,9 @@ export default function ImageGallery({
               alt={current.caption || `${title} 拡大画像`}
               className="mx-auto max-h-[80vh] w-auto rounded-lg object-contain"
             />
-            {current.caption && (
+            {(current.label || current.caption) && (
               <p className="mt-3 text-center text-sm text-white/90">
-                {current.caption}
+                {[current.label, current.caption].filter(Boolean).join(" ")}
               </p>
             )}
           </div>
