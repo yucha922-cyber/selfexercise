@@ -7,7 +7,7 @@ symptoms: katakori
 parts: hiji
 tags: ストレッチ, 前腕, デスクワーク, 腱鞘炎予防
 popularity: 50
-youtube:
+youtube: https://youtu.be/KV2FYcebjkw
 ---
 
 ## 目的
