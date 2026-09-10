@@ -31,5 +31,5 @@ export const CLINIC = {
    * 院からのおすすめセルフケア（slug を指定）。
    * 会員ライブラリのトップに「院からのおすすめ」として表示されます。
    */
-  recommendedSlugs: ["katakori-stretch", "youtsu-cat-stretch", "nekoze-chest-open"],
+  recommendedSlugs: ["kata-trap-stretch", "youtsu-cat-stretch", "nekoze-chest-open"],
 };

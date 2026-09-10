@@ -88,7 +88,6 @@
 | `kata-scapula-roll` | 肩甲骨回し |
 | `kata-banzai` | タオルを使った肩・胸のストレッチ |
 | `kata-trap-stretch` | 僧帽筋ストレッチ |
-| `katakori-stretch` | 肩こり改善ストレッチ |
 
 ## フォルダ一覧（前腕・肘）
 

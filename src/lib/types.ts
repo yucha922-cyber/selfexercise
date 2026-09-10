@@ -21,7 +21,7 @@ export type SelfCare = {
   order?: number;
   /** URL に使う一意なスラッグ（半角英数字とハイフン） */
   slug: string;
-  /** タイトル 例: 肩こり改善ストレッチ */
+  /** タイトル 例: 僧帽筋ストレッチ */
   title: string;
   /** 目的: なぜ行うのか */
   purpose: string;

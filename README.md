@@ -148,7 +148,7 @@ npm run build      # out/ に静的ファイルが出力されます
 ```
 src/data/selfcare/
 ├─ _template.md              ← コピー用のひな形（このファイル自体は公開されません）
-├─ katakori-stretch.md       ← 肩こり改善ストレッチ
+├─ kata-trap-stretch.md      ← 僧帽筋ストレッチ
 ├─ youtsu-cat-stretch.md     ← 腰痛ケア
 └─ ...（1ファイル＝1エクササイズ）
 ```
@@ -158,8 +158,8 @@ src/data/selfcare/
 逆に、ファイルを1つ消すだけでそのエクササイズは消えます。
 1ファイルが独立しているので、**ミスしても他のエクササイズに影響しません**。
 
-> - ファイル名がそのままURLになります（`katakori-stretch.md` → `/selfcare/katakori-stretch/`）。
->   画像を入れるフォルダ名も同じです（`public/images/katakori-stretch/`）。
+> - ファイル名がそのままURLになります（`kata-trap-stretch.md` → `/selfcare/kata-trap-stretch/`）。
+>   画像を入れるフォルダ名も同じです（`public/images/kata-trap-stretch/`）。
 > - `_` や `.` で始まるファイル（`_template.md` など）は読み込まれません。
 
 ### ファイルの中身
@@ -168,13 +168,13 @@ src/data/selfcare/
 
 ```markdown
 ---
-title: 肩こり改善ストレッチ
+title: 僧帽筋ストレッチ
 order: 10
 duration: 約3分
 difficulty: 1
 symptoms: katakori, kubikori
-parts: kubi, kata
-tags: ストレッチ, デスクワーク, 首
+parts: kata, kubi
+tags: ストレッチ, 僧帽筋, デスクワーク
 popularity: 95
 youtube: https://youtu.be/dQw4w9WgXcQ
 ---
@@ -198,7 +198,7 @@ youtube: https://youtu.be/dQw4w9WgXcQ
 
 | 項目 | 説明 | 例 |
 |------|------|----|
-| `title` | タイトル（**必須**） | `肩こり改善ストレッチ` |
+| `title` | タイトル（**必須**） | `僧帽筋ストレッチ` |
 | `order` | 表示順（小さいほど先。任意） | `10` |
 | `duration` | 所要時間（省略時は「約3分」） | `約3分` |
 | `difficulty` | 難易度（1〜5の数字・★の数） | `2` |

@@ -1,5 +1,5 @@
 ---
-title: ここにタイトルを書く（例：肩こり改善ストレッチ）
+title: ここにタイトルを書く（例：僧帽筋ストレッチ）
 order: 999
 duration: 約3分
 difficulty: 2
