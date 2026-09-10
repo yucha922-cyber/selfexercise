@@ -134,7 +134,6 @@
 | フォルダ名 | エクササイズ |
 | --- | --- |
 | `nekoze-chest-open` | 猫背改善 胸ひらきエクササイズ |
-| `kokansetsu-mobility` | 股関節まわりほぐし |
 | `gojukata-pendulum` | 四十肩・五十肩 振り子運動 |
 | `hiza-quad-set` | 膝痛予防 太もも強化（クアドセッティング） |
 
