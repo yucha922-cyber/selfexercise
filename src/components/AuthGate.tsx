@@ -6,12 +6,24 @@ import { isMember } from "@/lib/auth";
 
 // 会員限定エリアのソフトな入口ガード。
 // 未ログインのときは中身を表示せず、ログイン案内を出します。
-export default function AuthGate({ children }: { children: React.ReactNode }) {
-  const [state, setState] = useState<"checking" | "ok" | "no">("checking");
+//
+// allow を true にすると、ログインしていなくても中身を表示します。
+// 「院からのおすすめ」3つを無料公開するために使っています（src/lib/access.ts）。
+export default function AuthGate({
+  children,
+  allow = false,
+}: {
+  children: React.ReactNode;
+  allow?: boolean;
+}) {
+  const [state, setState] = useState<"checking" | "ok" | "no">(
+    allow ? "ok" : "checking"
+  );
 
   useEffect(() => {
+    if (allow) return;
     setState(isMember() ? "ok" : "no");
-  }, []);
+  }, [allow]);
 
   if (state === "checking") {
     return (
@@ -29,21 +41,21 @@ export default function AuthGate({ children }: { children: React.ReactNode }) {
           </svg>
         </div>
         <h1 className="font-serif text-xl font-bold text-ink-900">
-          会員専用ページです
+          会員様専用のセルフケアです
         </h1>
         <p className="mt-3 text-sm leading-relaxed text-ink-500">
-          セルフケアライブラリは、来院された会員様限定でご覧いただけます。
+          こちらのセルフケアは、ご来院いただいた会員様限定でご覧いただけます。
           <br />
           施術時にお渡しする会員コードでログインしてください。
         </p>
         <Link
-          href="/member/"
+          href="/"
           className="mt-6 inline-flex items-center justify-center rounded-full bg-ink-800 px-6 py-3 text-sm font-bold text-white transition hover:bg-ink-900"
         >
           会員コードでログイン
         </Link>
-        <p className="mt-4 text-xs text-ink-400">
-          まだ来院されていない方は、まず姿勢分析とご予約をどうぞ。
+        <p className="mt-4 text-xs leading-relaxed text-ink-400">
+          会員コードが分からない方は、担当セラピストにお尋ねください。
         </p>
       </div>
     );

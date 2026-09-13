@@ -82,8 +82,8 @@ export default function MemberLogin() {
         ログイン
       </button>
       <p className="mt-4 text-xs leading-relaxed text-ink-400">
-        会員コードは、ご来院時に院よりお渡しします。コードが分からない場合は、
-        次回来院時にスタッフへお尋ねください。
+        会員コードは、ご来院時に院よりお渡ししています。コードが分からない場合は、
+        担当セラピストにお尋ねください。
       </p>
     </form>
   );

@@ -15,9 +15,8 @@ export default function Footer() {
         </p>
 
         <nav className="mt-6 flex flex-wrap gap-x-6 gap-y-2 text-sm text-ink-600">
-          <Link href="/" className="hover:text-brand-600">ホーム</Link>
+          <Link href="/" className="hover:text-brand-600">会員ログイン</Link>
           <Link href="/analysis/" className="hover:text-brand-600">AI姿勢分析</Link>
-          <Link href="/member/" className="hover:text-brand-600">会員ログイン</Link>
         </nav>
 
         <div className="mt-6 rounded-2xl border border-ink-100 bg-cream-100 p-4">
