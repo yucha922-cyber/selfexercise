@@ -15,6 +15,8 @@ import SelfCareCard from "@/components/SelfCareCard";
 import ImageGallery from "@/components/ImageGallery";
 import ViewTracker from "@/components/ViewTracker";
 import AuthGate from "@/components/AuthGate";
+import { isFreeSlug } from "@/lib/access";
+import MemberInvite from "@/components/MemberInvite";
 
 export function generateStaticParams() {
   return getAllSlugs().map((slug) => ({ slug }));
@@ -46,6 +48,9 @@ export default function SelfCarePage({ params }: { params: { slug: string } }) {
 
   const videoId = parseYoutubeId(item.youtubeId);
 
+  // 「院からのおすすめ」3つは、ログインしていない方にも公開する
+  const isFree = isFreeSlug(item.slug);
+
   // 関連セルフケア（同じ症状か部位を持つもの）
   const related = getAllSelfCare()
     .filter(
@@ -70,7 +75,7 @@ export default function SelfCarePage({ params }: { params: { slug: string } }) {
   };
 
   return (
-    <AuthGate>
+    <AuthGate allow={isFree}>
     <article>
       <ViewTracker slug={item.slug} />
       <script
@@ -206,6 +211,9 @@ export default function SelfCarePage({ params }: { params: { slug: string } }) {
           </div>
         </Section>
       )}
+
+      {/* 無料公開ページの最後に、会員ライブラリのご案内を出す */}
+      {isFree && <MemberInvite total={getAllSelfCare().length} />}
     </article>
     </AuthGate>
   );
