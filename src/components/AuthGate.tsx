@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { isMember } from "@/lib/auth";
+import { isExpired, isMember } from "@/lib/auth";
 
 // 会員限定エリアのソフトな入口ガード。
 // 未ログインのときは中身を表示せず、ログイン案内を出します。
@@ -16,18 +16,46 @@ export default function AuthGate({
   children: React.ReactNode;
   allow?: boolean;
 }) {
-  const [state, setState] = useState<"checking" | "ok" | "no">(
+  const [state, setState] = useState<"checking" | "ok" | "no" | "expired">(
     allow ? "ok" : "checking"
   );
 
   useEffect(() => {
     if (allow) return;
-    setState(isMember() ? "ok" : "no");
+    if (isMember()) setState("ok");
+    else setState(isExpired() ? "expired" : "no");
   }, [allow]);
 
   if (state === "checking") {
     return (
       <div className="py-24 text-center text-sm text-ink-400">読み込み中…</div>
+    );
+  }
+
+  if (state === "expired") {
+    return (
+      <div className="mx-auto max-w-md py-16 text-center">
+        <div className="mx-auto mb-5 flex h-14 w-14 items-center justify-center rounded-full bg-amber-50 text-amber-600">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+            <circle cx="12" cy="12" r="9" />
+            <path d="M12 7v5l3 2" />
+          </svg>
+        </div>
+        <h1 className="font-serif text-xl font-bold text-ink-900">
+          会員コードの有効期限が切れました
+        </h1>
+        <p className="mt-3 text-sm leading-relaxed text-ink-500">
+          引き続きご覧いただくには、新しい会員コードが必要です。
+          <br />
+          次回ご来院の際に、担当セラピストからお受け取りください。
+        </p>
+        <Link
+          href="/"
+          className="mt-6 inline-flex items-center justify-center rounded-full bg-ink-800 px-6 py-3 text-sm font-bold text-white transition hover:bg-ink-900"
+        >
+          新しいコードでログイン
+        </Link>
+      </div>
     );
   }
 

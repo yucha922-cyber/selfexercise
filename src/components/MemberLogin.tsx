@@ -2,16 +2,18 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { isMember, login, logout } from "@/lib/auth";
+import { isExpired, isExpiredCode, isMember, login, logout } from "@/lib/auth";
 
 export default function MemberLogin() {
   const router = useRouter();
   const [code, setCode] = useState("");
-  const [error, setError] = useState(false);
+  const [error, setError] = useState<"none" | "wrong" | "expired">("none");
   const [already, setAlready] = useState(false);
+  const [expiredLogin, setExpiredLogin] = useState(false);
 
   useEffect(() => {
     setAlready(isMember());
+    setExpiredLogin(isExpired());
   }, []);
 
   const onSubmit = (e: React.FormEvent) => {
@@ -19,7 +21,7 @@ export default function MemberLogin() {
     if (login(code)) {
       router.push("/library/");
     } else {
-      setError(true);
+      setError(isExpiredCode(code) ? "expired" : "wrong");
     }
   };
 
@@ -55,6 +57,12 @@ export default function MemberLogin() {
       onSubmit={onSubmit}
       className="rounded-2xl border border-ink-100 bg-white p-6 shadow-soft"
     >
+      {expiredLogin && (
+        <p className="mb-4 rounded-xl border border-amber-200 bg-amber-50 p-3 text-sm leading-relaxed text-amber-900">
+          前回のコードは有効期限が切れました。次回ご来院の際に、担当セラピストから
+          新しいコードをお受け取りください。
+        </p>
+      )}
       <label className="block">
         <span className="text-sm font-bold text-ink-800">会員コード</span>
         <input
@@ -64,15 +72,21 @@ export default function MemberLogin() {
           value={code}
           onChange={(e) => {
             setCode(e.target.value);
-            setError(false);
+            setError("none");
           }}
           placeholder="施術時にお渡ししたコード"
           className="mt-2 w-full rounded-xl border border-ink-200 bg-white px-4 py-3 text-base text-ink-900 outline-none transition focus:border-brand-400 focus:ring-4 focus:ring-brand-100"
         />
       </label>
-      {error && (
+      {error === "wrong" && (
         <p className="mt-2 text-sm text-brand-600">
           コードが正しくありません。お手元のコードをご確認ください。
+        </p>
+      )}
+      {error === "expired" && (
+        <p className="mt-2 text-sm leading-relaxed text-brand-600">
+          このコードは有効期限が切れています。次回ご来院の際に、
+          担当セラピストから新しいコードをお受け取りください。
         </p>
       )}
       <button
