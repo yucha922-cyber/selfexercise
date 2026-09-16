@@ -6,7 +6,7 @@ import { isMember } from "@/lib/auth";
 
 // 無料公開しているセルフケアの最後に出す会員案内。
 // すでにログイン済みの方には表示しません。
-export default function MemberInvite({ total }: { total: number }) {
+export default function MemberInvite() {
   const [show, setShow] = useState(false);
 
   useEffect(() => {
@@ -21,7 +21,7 @@ export default function MemberInvite({ total }: { total: number }) {
         ほかのセルフケアは会員様限定です
       </h2>
       <p className="mt-2 text-sm leading-relaxed text-brand-700/90">
-        首・肩・腰・股関節・脚など、全{total}種類のセルフケアを動画と写真でご用意しています。
+        首・肩・腰・股関節・脚など、さまざまなセルフケアを動画と写真でご用意しています。
         ご来院いただいた会員様は、会員コードでログインするとすべてご覧いただけます。
       </p>
       <Link

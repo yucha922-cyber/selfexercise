@@ -1,11 +1,10 @@
 import Link from "next/link";
 import { CLINIC } from "@/config/clinic";
 import { SITE } from "@/lib/site";
-import { getAllSelfCare, getSelfCareBySlug } from "@/lib/selfcare";
+import { getSelfCareBySlug } from "@/lib/selfcare";
 import Logo from "@/components/Logo";
 import MemberLogin from "@/components/MemberLogin";
 import SelfCareCard from "@/components/SelfCareCard";
-import BookingCTA from "@/components/BookingCTA";
 
 export default function HomePage() {
   const jsonLd = {
@@ -15,8 +14,6 @@ export default function HomePage() {
     description: CLINIC.description,
     url: SITE.siteUrl,
   };
-
-  const total = getAllSelfCare().length;
 
   // ログインなしで公開する3つ（clinic.ts の recommendedSlugs）
   const freeItems = CLINIC.recommendedSlugs
@@ -87,8 +84,8 @@ export default function HomePage() {
           </div>
           <p className="mt-5 rounded-2xl border border-ink-100 bg-white p-4 text-sm leading-relaxed text-ink-500">
             このほかにも、首・肩・腰・股関節・脚など
-            <strong className="font-bold text-ink-800">全{total}種類</strong>
-            のセルフケアをご用意しています。ご覧いただけるのは会員様限定です。
+            <strong className="font-bold text-ink-800">さまざまなセルフケア</strong>
+            をご用意しています。ご覧いただけるのは会員様限定です。
           </p>
         </section>
       )}
@@ -110,9 +107,6 @@ export default function HomePage() {
             無料でAI姿勢分析をする
             <span aria-hidden>→</span>
           </Link>
-        </div>
-        <div className="mt-4">
-          <BookingCTA variant="compact" />
         </div>
       </section>
     </>

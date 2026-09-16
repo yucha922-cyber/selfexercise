@@ -221,7 +221,7 @@ export default function SelfCarePage({ params }: { params: { slug: string } }) {
       )}
 
       {/* 無料公開ページの最後に、会員ライブラリのご案内を出す */}
-      {isFree && <MemberInvite total={getAllSelfCare().length} />}
+      {isFree && <MemberInvite />}
     </article>
     </AuthGate>
   );
