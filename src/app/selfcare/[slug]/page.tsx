@@ -17,6 +17,8 @@ import ViewTracker from "@/components/ViewTracker";
 import AuthGate from "@/components/AuthGate";
 import { isFreeSlug } from "@/lib/access";
 import MemberInvite from "@/components/MemberInvite";
+import TherapistNote from "@/components/TherapistNote";
+import DoneButton from "@/components/DoneButton";
 
 export function generateStaticParams() {
   return getAllSlugs().map((slug) => ({ slug }));
@@ -107,6 +109,9 @@ export default function SelfCarePage({ params }: { params: { slug: string } }) {
           難易度 <Difficulty level={item.difficulty} />
         </span>
       </div>
+
+      {/* 担当セラピストからのひとこと（設定があるときだけ表示） */}
+      <TherapistNote slug={item.slug} />
 
       {/* 動画（.md の youtube: は動画ID・URLのどちらでもOK）
           rel=0        再生後・一時停止時に出る関連動画を同じチャンネル内に限定する
@@ -200,6 +205,9 @@ export default function SelfCarePage({ params }: { params: { slug: string } }) {
           ))}
         </div>
       </Section>
+
+      {/* 今日やった（実施記録） */}
+      <DoneButton slug={item.slug} />
 
       {/* 関連セルフケア */}
       {related.length > 0 && (

@@ -1,12 +1,15 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { getAllSelfCare } from "@/lib/selfcare";
+import { getAllSelfCare, getSelfCareBySlug } from "@/lib/selfcare";
 import { SYMPTOMS, PARTS } from "@/data/categories";
+import { CLINIC } from "@/config/clinic";
 import AuthGate from "@/components/AuthGate";
 import SearchFilter from "@/components/SearchFilter";
 import CategoryGrid from "@/components/CategoryGrid";
 import RecentlyViewed from "@/components/RecentlyViewed";
-import Recommended from "@/components/Recommended";
+import TopPicks from "@/components/TopPicks";
+import StreakSummary from "@/components/StreakSummary";
+import InstallPrompt from "@/components/InstallPrompt";
 
 export const metadata: Metadata = {
   title: "セルフケアライブラリ（会員専用）",
@@ -16,6 +19,9 @@ export const metadata: Metadata = {
 
 export default function LibraryPage() {
   const items = getAllSelfCare();
+  const recommended = CLINIC.recommendedSlugs
+    .map((slug) => getSelfCareBySlug(slug))
+    .filter((x): x is NonNullable<typeof x> => Boolean(x));
 
   return (
     <AuthGate>
@@ -29,8 +35,11 @@ export default function LibraryPage() {
         </p>
       </div>
 
-      {/* 院からのおすすめ */}
-      <Recommended />
+      {/* おすすめ（処方が設定されていればそちら、無ければ院からのおすすめ） */}
+      <TopPicks items={items} recommended={recommended} />
+
+      {/* 継続の記録（実施記録があるときだけ表示） */}
+      <StreakSummary />
 
       {/* 検索 */}
       <section className="mt-10">
@@ -56,6 +65,9 @@ export default function LibraryPage() {
 
       {/* 最近見た */}
       <RecentlyViewed items={items} />
+
+      {/* ホーム画面に追加のご案内 */}
+      <InstallPrompt />
     </AuthGate>
   );
 }
