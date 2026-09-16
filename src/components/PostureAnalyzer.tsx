@@ -9,7 +9,6 @@ import {
   type AnalysisResult,
   type EnvCheck,
 } from "@/lib/poseAnalysis";
-import BookingCTA from "./BookingCTA";
 import PoseOverlay from "./PoseOverlay";
 import ShootingGuide from "./ShootingGuide";
 
@@ -320,16 +319,14 @@ function ResultView({
 
   return (
     <div className="space-y-6">
-      {/* 予約CTA（最優先・最上部） */}
+      {/* 結果の位置づけの説明 */}
       <section className="rounded-2xl border border-brand-100 bg-brand-50/60 p-5 shadow-soft">
         <h2 className="font-serif text-lg font-bold text-ink-900">
           詳しい改善方法は、施術時にお伝えします
         </h2>
         <p className="mt-2 text-sm leading-relaxed text-ink-600">
           姿勢の傾向は人それぞれ。あなたに合った根本改善プランは、来院時に専門家が直接ご提案します。
-          まずはご予約ください。
         </p>
-        <BookingCTA variant="full" className="mt-4" />
       </section>
 
       {/* 総合スコア */}
@@ -427,9 +424,6 @@ function ResultView({
           </p>
         </section>
       )}
-
-      {/* 再CTA */}
-      <BookingCTA variant="full" />
 
       <div className="text-center">
         <button
