@@ -8,7 +8,7 @@ import { withBasePath } from "@/lib/path";
 export const metadata: Metadata = {
   metadataBase: new URL(SITE.siteUrl),
   title: {
-    default: `${SITE.title} | ${SITE.name}`,
+    default: SITE.title,
     template: `%s | ${SITE.name}`,
   },
   description: SITE.description,
