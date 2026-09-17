@@ -114,7 +114,7 @@
 | `piriformis-stretch` | お尻（梨状筋）ストレッチ |
 | `clamshell` | クラムシェル |
 | `side-leg-raise` | サイドレッグレイズ |
-| `glute-stretch` | 臀筋ストレッチ |
+| `seated-piriformis-stretch` | 座位・殿筋（梨状筋）ストレッチ |
 
 ## フォルダ一覧（太もも・ふくらはぎ・足）
 

@@ -1,11 +1,11 @@
 ---
-title: 臀筋ストレッチ
+title: 座位・殿筋（梨状筋）ストレッチ
 order: 46
 duration: 約3分
 difficulty: 1
 symptoms: youtsu, kokansetsutsu, zakotsushinkeitsu
 parts: oshiri, kokansetsu
-tags: ストレッチ, お尻, デスクワーク, イスで簡単
+tags: ストレッチ, お尻, 梨状筋, デスクワーク, イスで簡単
 popularity: 58
 youtube:
 ---
