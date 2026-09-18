@@ -8,6 +8,7 @@ parts: oshiri, kotsuban, taikan
 tags: エクササイズ, お尻, 体幹, 腰痛予防
 popularity: 62
 youtube: https://youtu.be/tbjyTgav6T0
+youtube_mobile: https://youtube.com/shorts/J4Unn5uzhIk
 ---
 
 ## 目的

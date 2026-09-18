@@ -8,6 +8,7 @@ parts: hiji
 tags: ストレッチ, 前腕, デスクワーク, テニス肘予防
 popularity: 48
 youtube: https://youtu.be/ZrR5v2oDHH0
+youtube_mobile: https://youtube.com/shorts/TD5T0XTUPvs
 ---
 
 ## 目的

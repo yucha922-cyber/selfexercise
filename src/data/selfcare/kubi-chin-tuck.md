@@ -8,6 +8,7 @@ parts: kubi
 tags: エクササイズ, 首, 姿勢
 popularity: 70
 youtube: https://youtu.be/9tKVDKnqP0Y
+youtube_mobile: https://youtube.com/shorts/CMx23dr0zzY
 ---
 
 ## 目的

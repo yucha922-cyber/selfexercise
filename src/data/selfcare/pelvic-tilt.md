@@ -8,6 +8,7 @@ parts: kotsuban, koshi
 tags: エクササイズ, 骨盤, 腰, 高齢者向け
 popularity: 58
 youtube: https://youtu.be/PLNyC55a_cA
+youtube_mobile: https://youtube.com/shorts/dv8sok64xUw
 ---
 
 ## 目的

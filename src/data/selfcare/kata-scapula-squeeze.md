@@ -8,6 +8,7 @@ parts: kata, senaka
 tags: エクササイズ, 肩甲骨, 姿勢, 壁エンジェル
 popularity: 66
 youtube: https://youtu.be/M1V7Q8C0Uoo
+youtube_mobile: https://youtube.com/shorts/SmeO62qRihY
 ---
 
 ## 目的

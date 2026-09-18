@@ -8,6 +8,7 @@ parts: senaka, kata, kubi
 tags: 姿勢, エクササイズ, 肩甲骨
 popularity: 76
 youtube: https://youtu.be/ddoiNzcibC0
+youtube_mobile: https://youtube.com/shorts/35YfDa0rEe8
 ---
 
 ## 目的

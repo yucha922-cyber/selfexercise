@@ -8,6 +8,7 @@ parts: oshiri, kokansetsu, kotsuban, koshi
 tags: ストレッチ, お尻, 坐骨神経痛, 梨状筋, 股関節
 popularity: 74
 youtube: https://youtu.be/PBc0fJl7Ato
+youtube_mobile: https://youtube.com/shorts/4bJyXwrpKsk
 ---
 
 ## 目的

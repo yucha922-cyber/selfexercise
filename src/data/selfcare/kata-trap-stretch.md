@@ -8,6 +8,7 @@ parts: kata, kubi
 tags: ストレッチ, 僧帽筋, デスクワーク, 首, 肩こり
 popularity: 95
 youtube: https://youtu.be/U7pxUKHJNBs
+youtube_mobile: https://youtube.com/shorts/-DjbXx1EbFw
 ---
 
 ## 目的

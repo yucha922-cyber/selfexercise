@@ -8,6 +8,7 @@ parts: kata, senaka
 tags: ストレッチ, 脇, 背中
 popularity: 55
 youtube: https://youtu.be/SLYx6kE0oxY
+youtube_mobile: https://youtube.com/shorts/iYCIjyKFJUE
 ---
 
 ## 目的

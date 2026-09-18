@@ -8,6 +8,7 @@ parts: kubi
 tags: ストレッチ, タオル, 首, デスクワーク
 popularity: 60
 youtube: https://youtu.be/_Cfzcl-lELY
+youtube_mobile: https://youtube.com/shorts/L2_jibjGGnA
 ---
 
 ## 目的

@@ -8,6 +8,7 @@ parts: senaka, kubi
 tags: エクササイズ, 姿勢, 背中
 popularity: 64
 youtube: https://youtu.be/wy7zdc37WUs
+youtube_mobile: https://youtube.com/shorts/GFxvTcTYExg
 ---
 
 ## 目的
