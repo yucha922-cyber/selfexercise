@@ -121,6 +121,8 @@ export function parseSelfCare(raw: string, slug: string, file: string): SelfCare
     steps: toList(sections.steps),
     cautions: toList(sections.cautions),
     youtubeId: meta.youtube ?? meta.youtubeId ?? "",
+    youtubeMobileId:
+      meta.youtube_mobile ?? meta.youtubeMobile ?? meta.youtube_sp ?? "",
     duration: meta.duration || "約3分",
     difficulty: meta.difficulty ? toNumber(meta.difficulty, "difficulty", file) : 1,
     symptoms: toArray(meta.symptoms ?? ""),

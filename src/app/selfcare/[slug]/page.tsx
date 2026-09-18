@@ -49,6 +49,8 @@ export default function SelfCarePage({ params }: { params: { slug: string } }) {
   if (!item) notFound();
 
   const videoId = parseYoutubeId(item.youtubeId);
+  // スマホ用の縦動画（未設定なら、スマホでも上の動画を表示する）
+  const mobileVideoId = parseYoutubeId(item.youtubeMobileId);
 
   // 「院からのおすすめ」3つは、ログインしていない方にも公開する
   const isFree = isFreeSlug(item.slug);
@@ -113,22 +115,31 @@ export default function SelfCarePage({ params }: { params: { slug: string } }) {
       {/* 担当セラピストからのひとこと（設定があるときだけ表示） */}
       <TherapistNote slug={item.slug} />
 
-      {/* 動画（.md の youtube: は動画ID・URLのどちらでもOK）
+      {/* 動画。.md の youtube: は動画ID・URLのどちらでもOK。
+          youtube_mobile: を設定すると、スマホでは縦動画のほうが再生されます。
+
           rel=0        再生後・一時停止時に出る関連動画を同じチャンネル内に限定する
                        （院と無関係な動画がページ内に出るのを防ぐため）
           playsinline=1 iPhone で全画面に切り替わらず、ページ内でそのまま再生する
           ※ タイトルと投稿者名の非表示は、YouTube 側が showinfo（2018年廃止）と
-            modestbranding（2023年廃止）を削除したため、現在は指定できません */}
+            modestbranding（2023年廃止）を削除したため、現在は指定できません
+
+          スマホ用と通常用の2つを置く場合、表示しない側は CSS で隠したうえで
+          loading="lazy" を付けています。画面に出ない iframe は読み込まれないため、
+          動画が二重に読み込まれることはありません。 */}
+      {videoId && mobileVideoId && (
+        <VideoFrame
+          id={mobileVideoId}
+          title={item.title}
+          className="mx-auto mt-6 aspect-[9/16] w-full max-w-[22rem] sm:hidden"
+        />
+      )}
       {videoId && (
-        <div className="mt-6 aspect-video w-full overflow-hidden rounded-2xl bg-black">
-          <iframe
-            className="h-full w-full"
-            src={`https://www.youtube.com/embed/${videoId}?rel=0&playsinline=1`}
-            title={item.title}
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowFullScreen
-          />
-        </div>
+        <VideoFrame
+          id={videoId}
+          title={item.title}
+          className={`mt-6 aspect-video w-full ${mobileVideoId ? "hidden sm:block" : ""}`}
+        />
       )}
 
       {/* 目的 */}
@@ -224,6 +235,31 @@ export default function SelfCarePage({ params }: { params: { slug: string } }) {
       {isFree && <MemberInvite />}
     </article>
     </AuthGate>
+  );
+}
+
+// YouTube の埋め込みプレーヤー。
+// className で大きさ（縦横比）と、どの画面幅で表示するかを指定します。
+function VideoFrame({
+  id,
+  title,
+  className,
+}: {
+  id: string;
+  title: string;
+  className: string;
+}) {
+  return (
+    <div className={`overflow-hidden rounded-2xl bg-black ${className}`}>
+      <iframe
+        className="h-full w-full"
+        src={`https://www.youtube.com/embed/${id}?rel=0&playsinline=1`}
+        title={title}
+        loading="lazy"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowFullScreen
+      />
+    </div>
   );
 }
 

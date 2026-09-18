@@ -8,6 +8,7 @@ parts: kata
 tags: ストレッチ
 popularity: 50
 youtube:
+youtube_mobile:
 ---
 
 ## 目的
