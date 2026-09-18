@@ -35,6 +35,7 @@ parts: kata
 tags: ストレッチ, 胸, 巻き肩
 popularity: 68
 youtube:
+youtube_mobile:
 ---
 
 ## 目的
@@ -60,6 +61,7 @@ youtube:
 | 手順の順番を変える | `## 実施方法` の下 | 行を入れ替える（番号は自動で振り直されます） |
 | 注意点を増やす／減らす | `## 注意点` の下 | 手順と同じ |
 | 動画を入れる | `youtube:` | YouTubeのURLを貼る（`docs/youtube-guide.md`） |
+| スマホ用の縦動画を入れる | `youtube_mobile:` | 縦動画のURLを貼る。空ならスマホでも上の動画を表示 |
 
 手順の番号（①②③）は自動で付くので、**自分で番号を書く必要はありません**。
 `- ` で始まる行を並べるだけです。
@@ -77,6 +79,7 @@ youtube:
 | `tags` | 検索用のタグ。自由に書けます |
 | `popularity` | 人気度（ランキングの初期値） |
 | `youtube` | YouTubeのURL。空ならば動画なし |
+| `youtube_mobile` | スマホ用の縦動画のURL（任意）。空なら `youtube` の動画を表示 |
 
 ## 新しいエクササイズを増やすとき
 

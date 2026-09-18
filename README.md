@@ -228,6 +228,7 @@ youtube: https://youtu.be/dQw4w9WgXcQ
 | `tags` | タグ（自由入力・カンマ区切り） | `ストレッチ, 首` |
 | `popularity` | 人気度の初期値（ランキング用・任意） | `90` |
 | `youtube` | YouTube動画のURL（任意）。空なら動画なし | `https://youtu.be/dQw4w9WgXcQ` |
+| `youtube_mobile` | スマホ用の縦動画のURL（任意）。空なら `youtube` を表示 | `https://youtu.be/dQw4w9WgXcQ` |
 
 本文の見出しは `## 目的` `## 実施方法` `## 注意点` の3つです
 （`## やり方` `## 手順` `## 注意事項` と書いても認識します）。
@@ -266,6 +267,10 @@ youtube: https://youtu.be/dQw4w9WgXcQ
 | ショート動画 | `https://www.youtube.com/shorts/dQw4w9WgXcQ` |
 | ライブ配信 | `https://www.youtube.com/live/dQw4w9WgXcQ` |
 | 動画IDのみ | `dQw4w9WgXcQ` |
+
+スマホで別の動画（縦動画）を流したいときは、`youtube_mobile:` にそのURLを貼ります。
+画面の狭い端末では縦長のプレーヤーで `youtube_mobile` の動画が、パソコンでは
+これまでどおり `youtube` の動画が表示されます。空欄なら、どの端末でも `youtube` の動画です。
 
 - **差し替え**：`youtube:` の値を別のURLに書き換えるだけです。
 - **動画を消す**：`youtube:` のうしろを空にします。

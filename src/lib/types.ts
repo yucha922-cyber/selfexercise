@@ -36,6 +36,12 @@ export type SelfCare = {
    */
   youtubeId?: string;
   /**
+   * スマホ用のYouTube動画（任意・縦動画向け）。
+   * 設定すると、スマホなど画面の狭い端末ではこちらが再生されます。
+   * 空欄のときは、画面の広さに関わらず youtubeId の動画が表示されます。
+   */
+  youtubeMobileId?: string;
+  /**
    * 画像（任意・最大8枚。基本は 開始姿勢／終了姿勢／ダメな例 の3枚構成）
    * 空の場合は public/images/<slug>/ フォルダ内の画像が自動で読み込まれます。
    */
