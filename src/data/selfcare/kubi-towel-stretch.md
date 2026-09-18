@@ -7,7 +7,7 @@ symptoms: kubikori, straightneck, katakori
 parts: kubi
 tags: ストレッチ, タオル, 首, デスクワーク
 popularity: 60
-youtube:
+youtube: https://youtu.be/_Cfzcl-lELY
 ---
 
 ## 目的

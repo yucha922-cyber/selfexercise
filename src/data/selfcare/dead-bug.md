@@ -7,7 +7,7 @@ symptoms: youtsu, sorigoshi
 parts: taikan, koshi
 tags: エクササイズ, 体幹, インナーマッスル, 腰痛予防
 popularity: 48
-youtube:
+youtube: https://youtu.be/aANPn_ZPyTg
 ---
 
 ## 目的

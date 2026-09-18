@@ -7,7 +7,7 @@ symptoms: zakotsushinkeitsu, kokansetsutsu, youtsu
 parts: oshiri, kokansetsu, kotsuban, koshi
 tags: ストレッチ, お尻, 坐骨神経痛, 梨状筋, 股関節
 popularity: 74
-youtube:
+youtube: https://youtu.be/PBc0fJl7Ato
 ---
 
 ## 目的

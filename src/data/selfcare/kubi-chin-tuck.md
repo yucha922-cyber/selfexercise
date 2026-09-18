@@ -7,7 +7,7 @@ symptoms: straightneck, kubikori, nekoze
 parts: kubi
 tags: エクササイズ, 首, 姿勢
 popularity: 70
-youtube:
+youtube: https://youtu.be/9tKVDKnqP0Y
 ---
 
 ## 目的

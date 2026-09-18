@@ -7,7 +7,7 @@ symptoms: kokansetsutsu, hizatsu
 parts: oshiri, kokansetsu
 tags: エクササイズ, 中殿筋, 股関節, 膝痛予防
 popularity: 52
-youtube:
+youtube: https://youtu.be/h0-DPt-qsCw
 ---
 
 ## 目的

@@ -7,7 +7,7 @@ symptoms: straightneck, nekoze, kubikori, katakori
 parts: senaka, kubi
 tags: エクササイズ, 姿勢, 背中
 popularity: 64
-youtube:
+youtube: https://youtu.be/wy7zdc37WUs
 ---
 
 ## 目的
