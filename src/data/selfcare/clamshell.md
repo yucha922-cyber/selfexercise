@@ -8,6 +8,7 @@ parts: oshiri, kokansetsu
 tags: エクササイズ, 中殿筋, 股関節, 膝痛予防
 popularity: 52
 youtube: https://youtu.be/h0-DPt-qsCw
+youtube_mobile: https://youtube.com/shorts/POtQc2pZS7Q
 ---
 
 ## 目的

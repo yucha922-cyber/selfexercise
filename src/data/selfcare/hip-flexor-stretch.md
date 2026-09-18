@@ -8,6 +8,7 @@ parts: kokansetsu, koshi
 tags: ストレッチ, 股関節, 反り腰, デスクワーク
 popularity: 72
 youtube: https://youtu.be/FHdfu9ervfM
+youtube_mobile: https://youtube.com/shorts/121FehIKubg
 ---
 
 ## 目的

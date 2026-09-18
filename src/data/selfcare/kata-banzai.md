@@ -8,6 +8,7 @@ parts: kata, senaka
 tags: ストレッチ, タオル, 肩甲骨, 呼吸
 popularity: 60
 youtube: https://youtu.be/sfuNVJimhIc
+youtube_mobile: https://youtube.com/shorts/RqAq3721Heo
 ---
 
 ## 目的

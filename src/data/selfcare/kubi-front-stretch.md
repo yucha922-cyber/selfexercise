@@ -8,6 +8,7 @@ parts: kubi
 tags: ストレッチ, 首, スマホ首
 popularity: 62
 youtube: https://youtu.be/9WOyC6aU-Ns
+youtube_mobile: https://youtube.com/shorts/0TfyJNst2vU
 ---
 
 ## 目的

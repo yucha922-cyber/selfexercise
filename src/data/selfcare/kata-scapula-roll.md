@@ -8,6 +8,7 @@ parts: kata
 tags: エクササイズ, 肩甲骨, デスクワーク
 popularity: 72
 youtube: https://youtu.be/3_2EeZbqcjo
+youtube_mobile: https://youtube.com/shorts/YYxTdWOUo7Y
 ---
 
 ## 目的

@@ -8,6 +8,7 @@ parts: kubi
 tags: マッサージ, 首, 頭痛
 popularity: 81
 youtube: https://youtu.be/qlOUZSQX-i8
+youtube_mobile: https://youtube.com/shorts/IIGhrBfRx6M
 ---
 
 ## 目的

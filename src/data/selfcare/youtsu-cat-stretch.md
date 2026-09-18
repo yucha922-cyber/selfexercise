@@ -8,6 +8,7 @@ parts: koshi, senaka, kotsuban, taikan
 tags: ストレッチ, モビリティ, 腰, 体幹, キャット&カウ
 popularity: 88
 youtube: https://youtu.be/DegvKET9VmY
+youtube_mobile: https://youtube.com/shorts/vLF9H06pFFM
 ---
 
 ## 目的

@@ -8,6 +8,7 @@ parts: taikan, koshi
 tags: エクササイズ, 体幹, インナーマッスル, 腰痛予防
 popularity: 48
 youtube: https://youtu.be/aANPn_ZPyTg
+youtube_mobile: https://youtube.com/shorts/jLE6rLy32-4
 ---
 
 ## 目的

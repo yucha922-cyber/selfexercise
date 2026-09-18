@@ -8,6 +8,7 @@ parts: kubi
 tags: ストレッチ, 首, 頭痛
 popularity: 58
 youtube: https://youtu.be/qjwALav6CMc
+youtube_mobile: https://youtube.com/shorts/GCNTn-LqkA4
 ---
 
 ## 目的
