@@ -7,7 +7,7 @@ symptoms: youtsu, sorigoshi
 parts: kotsuban, koshi
 tags: エクササイズ, 骨盤, 腰, 高齢者向け
 popularity: 58
-youtube:
+youtube: https://youtu.be/PLNyC55a_cA
 ---
 
 ## 目的

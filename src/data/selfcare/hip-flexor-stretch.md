@@ -7,7 +7,7 @@ symptoms: sorigoshi, youtsu, kokansetsutsu
 parts: kokansetsu, koshi
 tags: ストレッチ, 股関節, 反り腰, デスクワーク
 popularity: 72
-youtube:
+youtube: https://youtu.be/FHdfu9ervfM
 ---
 
 ## 目的

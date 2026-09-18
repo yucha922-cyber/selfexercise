@@ -7,7 +7,7 @@ symptoms: katakori
 parts: kata
 tags: エクササイズ, 肩甲骨, デスクワーク
 popularity: 72
-youtube:
+youtube: https://youtu.be/3_2EeZbqcjo
 ---
 
 ## 目的

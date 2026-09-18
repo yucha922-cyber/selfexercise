@@ -7,7 +7,7 @@ symptoms: zutsu, kubikori, straightneck
 parts: kubi
 tags: マッサージ, 首, 頭痛
 popularity: 81
-youtube:
+youtube: https://youtu.be/qlOUZSQX-i8
 ---
 
 ## 目的

@@ -7,7 +7,7 @@ symptoms: youtsu, sorigoshi
 parts: oshiri, kotsuban, taikan
 tags: エクササイズ, お尻, 体幹, 腰痛予防
 popularity: 62
-youtube:
+youtube: https://youtu.be/tbjyTgav6T0
 ---
 
 ## 目的
