@@ -7,7 +7,8 @@ symptoms: hizatsu, sorigoshi
 parts: futomomo, hiza
 tags: ストレッチ, 太もも前, 膝, ランニング
 popularity: 64
-youtube:
+youtube: https://youtu.be/eXmjShflrl4
+youtube_mobile: https://youtube.com/shorts/hlqmsrDXYNk
 ---
 
 ## 目的

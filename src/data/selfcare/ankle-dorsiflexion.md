@@ -7,7 +7,8 @@ symptoms: hizatsu
 parts: ashikubi, fukurahagi
 tags: モビリティ, 足首, 歩行改善, スクワット
 popularity: 54
-youtube:
+youtube: https://youtu.be/BbMkqD22kVc
+youtube_mobile: https://youtube.com/shorts/9phfgPv6V6c
 ---
 
 ## 目的

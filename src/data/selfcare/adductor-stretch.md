@@ -7,7 +7,8 @@ symptoms: kokansetsutsu, youtsu
 parts: kokansetsu, futomomo
 tags: ストレッチ, 内もも, 股関節, 開脚, 立ったまま
 popularity: 60
-youtube:
+youtube: https://youtu.be/76iSHikD-CI
+youtube_mobile: https://youtube.com/shorts/Py15CjDmJbI
 ---
 
 ## 目的
