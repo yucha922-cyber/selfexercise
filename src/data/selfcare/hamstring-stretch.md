@@ -7,7 +7,8 @@ symptoms: youtsu, zakotsushinkeitsu
 parts: futomomo, koshi
 tags: ストレッチ, 太もも裏, 腰痛, デスクワーク
 popularity: 78
-youtube:
+youtube: https://youtu.be/QT8grI6paK0
+youtube_mobile: https://youtube.com/shorts/tf5mHEyNGtY
 ---
 
 ## 目的

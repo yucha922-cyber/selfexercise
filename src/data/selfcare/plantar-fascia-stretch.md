@@ -7,7 +7,8 @@ symptoms: sokuteikinmakuen
 parts: ashiura, ashikubi
 tags: ストレッチ, 足裏, 足底筋膜炎, かかとの痛み
 popularity: 56
-youtube:
+youtube: https://youtu.be/by_p7XlLEwo
+youtube_mobile: https://youtube.com/shorts/eM7UHPPUsDI
 ---
 
 ## 目的

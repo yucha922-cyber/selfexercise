@@ -7,7 +7,8 @@ symptoms: kokansetsutsu, youtsu
 parts: oshiri, kotsuban
 tags: エクササイズ, 中殿筋, 骨盤, 歩行改善
 popularity: 50
-youtube:
+youtube: https://youtu.be/IXqVe0pcl7Q
+youtube_mobile: https://youtube.com/shorts/3Bbgi7Kc_ZQ
 ---
 
 ## 目的

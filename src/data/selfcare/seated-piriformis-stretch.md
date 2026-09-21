@@ -7,7 +7,8 @@ symptoms: youtsu, kokansetsutsu, zakotsushinkeitsu
 parts: oshiri, kokansetsu
 tags: ストレッチ, お尻, 梨状筋, デスクワーク, イスで簡単
 popularity: 58
-youtube:
+youtube: https://youtu.be/Zpr3gJNPaT4
+youtube_mobile: https://youtube.com/shorts/DCqY1t0ALv0
 ---
 
 ## 目的

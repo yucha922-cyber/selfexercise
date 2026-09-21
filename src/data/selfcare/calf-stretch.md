@@ -7,7 +7,8 @@ symptoms: mukumi
 parts: fukurahagi, ashikubi
 tags: ストレッチ, ふくらはぎ, むくみ, こむら返り
 popularity: 76
-youtube:
+youtube: https://youtu.be/kxSGPi6O_kA
+youtube_mobile: https://youtube.com/shorts/vjCB3LsXMM8
 ---
 
 ## 目的

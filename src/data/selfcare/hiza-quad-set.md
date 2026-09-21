@@ -7,7 +7,8 @@ symptoms: hizatsu
 parts: hiza, ashikubi
 tags: 筋トレ, 膝, 太もも
 popularity: 58
-youtube:
+youtube: https://youtu.be/9q0bMHD7hJI
+youtube_mobile: https://youtube.com/shorts/0ITSe97DCj4
 ---
 
 ## 目的
