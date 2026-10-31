@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { isExpired, isMember } from "@/lib/auth";
+import { recordVisit } from "@/lib/visits";
 
 // 会員限定エリアのソフトな入口ガード。
 // 未ログインのときは中身を表示せず、ログイン案内を出します。
@@ -21,6 +22,8 @@ export default function AuthGate({
   );
 
   useEffect(() => {
+    // 会員なら、どのページから来ても今日のログインスタンプを押す
+    if (isMember()) recordVisit();
     if (allow) return;
     if (isMember()) setState("ok");
     else setState(isExpired() ? "expired" : "no");

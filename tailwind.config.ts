@@ -90,6 +90,22 @@ const config: Config = {
       letterSpacing: {
         wider2: "0.12em",
       },
+      // ログインスタンプを押したときの演出
+      keyframes: {
+        stamp: {
+          "0%": { transform: "scale(2.2) rotate(-25deg)", opacity: "0" },
+          "60%": { transform: "scale(0.9) rotate(-12deg)", opacity: "1" },
+          "100%": { transform: "scale(1) rotate(-12deg)", opacity: "1" },
+        },
+        pop: {
+          "0%": { transform: "scale(0.6)", opacity: "0" },
+          "100%": { transform: "scale(1)", opacity: "1" },
+        },
+      },
+      animation: {
+        stamp: "stamp 0.6s cubic-bezier(0.2, 0.8, 0.3, 1.2) both",
+        pop: "pop 0.35s ease-out both",
+      },
     },
   },
   plugins: [],

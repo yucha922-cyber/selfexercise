@@ -21,9 +21,11 @@ export default function SelfCareCard({ item }: { item: SelfCare }) {
         {item.title}
       </h3>
 
-      <p className="mt-2.5 line-clamp-2 text-sm leading-relaxed text-ink-500">
-        {item.purpose}
-      </p>
+      {item.purpose && (
+        <p className="mt-2.5 line-clamp-2 text-sm leading-relaxed text-ink-500">
+          {item.purpose}
+        </p>
+      )}
 
       <div className="mt-3.5 flex flex-wrap gap-1.5">
         {item.symptoms.slice(0, 2).map((s) => (
