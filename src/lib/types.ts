@@ -42,6 +42,12 @@ export type SelfCare = {
    */
   youtubeMobileId?: string;
   /**
+   * 動画ファイル（任意）。public/images/<slug>/ に mp4 などを置くと自動で設定されます。
+   * YouTube（youtubeId）が設定されている場合は、YouTube のほうを優先して表示します。
+   * 例: /images/kata-towel/movie.mp4
+   */
+  videoSrc?: string;
+  /**
    * 画像（任意・最大8枚。基本は 開始姿勢／終了姿勢／ダメな例 の3枚構成）
    * 空の場合は public/images/<slug>/ フォルダ内の画像が自動で読み込まれます。
    */

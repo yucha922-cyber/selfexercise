@@ -9,6 +9,7 @@ import CategoryGrid from "@/components/CategoryGrid";
 import RecentlyViewed from "@/components/RecentlyViewed";
 import TopPicks from "@/components/TopPicks";
 import StreakSummary from "@/components/StreakSummary";
+import LoginStamp from "@/components/LoginStamp";
 import InstallPrompt from "@/components/InstallPrompt";
 
 export const metadata: Metadata = {
@@ -34,6 +35,9 @@ export default function LibraryPage() {
           施術の効果を維持するためのセルフケアをまとめています。
         </p>
       </div>
+
+      {/* ログインスタンプ（◯日連続ログイン・今月のカレンダー） */}
+      <LoginStamp />
 
       {/* おすすめ（処方が設定されていればそちら、無ければ院からのおすすめ） */}
       <TopPicks items={items} recommended={recommended} />

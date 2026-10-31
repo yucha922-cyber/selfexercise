@@ -30,6 +30,21 @@ const DIR = path.join(process.cwd(), "src", "data", "selfcare");
 const IMAGES_DIR = path.join(process.cwd(), "public", "images");
 const IMAGE_EXTS = new Set([".jpg", ".jpeg", ".png", ".webp", ".gif", ".avif"]);
 
+// 動画ファイルも同じフォルダに置けます（mp4 推奨）。1ページに1本で、
+// 複数あるときはファイル名順で最初の1本を使います。
+// .md に youtube: が書いてある場合は YouTube のほうを表示します。
+const VIDEO_EXTS = new Set([".mp4", ".m4v", ".webm", ".mov"]);
+
+function findVideoInFolder(slug: string): string {
+  const dir = path.join(IMAGES_DIR, slug);
+  if (!fs.existsSync(dir)) return "";
+  const video = fs
+    .readdirSync(dir)
+    .filter((f) => !f.startsWith(".") && VIDEO_EXTS.has(path.extname(f).toLowerCase()))
+    .sort((a, b) => a.localeCompare(b, "ja", { numeric: true }))[0];
+  return video ? `/images/${slug}/${video}` : "";
+}
+
 type Role = { aliases: string[]; label: string; kind: "ok" | "ng" };
 
 // 表示はこの順番になります（ファイル名の順ではありません）
@@ -145,6 +160,7 @@ function loadAll(): SelfCare[] {
     const raw = fs.readFileSync(path.join(DIR, file), "utf-8");
     const item = parseSelfCare(raw, slug, `src/data/selfcare/${file}`);
     item.images = loadImagesFromFolder(slug);
+    item.videoSrc = findVideoInFolder(slug);
     return item;
   });
 

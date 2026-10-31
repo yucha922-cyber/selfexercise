@@ -9,6 +9,7 @@ import {
 import { symptomName, partName } from "@/data/categories";
 import { SITE } from "@/lib/site";
 import { parseYoutubeId } from "@/lib/youtube";
+import { withBasePath } from "@/lib/path";
 import Difficulty from "@/components/Difficulty";
 import FavoriteButton from "@/components/FavoriteButton";
 import SelfCareCard from "@/components/SelfCareCard";
@@ -31,7 +32,7 @@ export function generateMetadata({
 }): Metadata {
   const item = getSelfCareBySlug(params.slug);
   if (!item) return {};
-  const description = `${item.purpose}（所要時間: ${item.duration} / 難易度: ★${item.difficulty}）`;
+  const description = `${item.purpose || item.title}（所要時間: ${item.duration} / 難易度: ★${item.difficulty}）`;
   return {
     title: item.title,
     description,
@@ -69,7 +70,7 @@ export default function SelfCarePage({ params }: { params: { slug: string } }) {
     "@context": "https://schema.org",
     "@type": "HowTo",
     name: item.title,
-    description: item.purpose,
+    description: item.purpose || item.title,
     totalTime: item.duration,
     step: item.steps.map((s, i) => ({
       "@type": "HowToStep",
@@ -142,24 +143,41 @@ export default function SelfCarePage({ params }: { params: { slug: string } }) {
         />
       )}
 
-      {/* 目的 */}
-      <Section title="目的">
-        <p className="leading-relaxed text-gray-700">{item.purpose}</p>
-      </Section>
+      {/* YouTube が無く、画像フォルダに動画ファイル（mp4 など）があるときはそちらを再生 */}
+      {!videoId && item.videoSrc && (
+        <div className="mt-6 overflow-hidden rounded-2xl bg-black">
+          <video
+            className="mx-auto max-h-[80vh] w-full"
+            src={withBasePath(item.videoSrc)}
+            controls
+            playsInline
+            preload="metadata"
+          />
+        </div>
+      )}
 
-      {/* 実施方法 */}
-      <Section title="実施方法">
-        <ol className="space-y-2">
-          {item.steps.map((s, i) => (
-            <li key={i} className="flex gap-3 text-gray-700">
-              <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-brand-500 text-xs font-bold text-white">
-                {i + 1}
-              </span>
-              <span className="leading-relaxed text-ink-700">{s}</span>
-            </li>
-          ))}
-        </ol>
-      </Section>
+      {/* 目的（書いてあるときだけ表示） */}
+      {item.purpose && (
+        <Section title="目的">
+          <p className="leading-relaxed text-gray-700">{item.purpose}</p>
+        </Section>
+      )}
+
+      {/* 実施方法（書いてあるときだけ表示） */}
+      {item.steps.length > 0 && (
+        <Section title="実施方法">
+          <ol className="space-y-2">
+            {item.steps.map((s, i) => (
+              <li key={i} className="flex gap-3 text-gray-700">
+                <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-brand-500 text-xs font-bold text-white">
+                  {i + 1}
+                </span>
+                <span className="leading-relaxed text-ink-700">{s}</span>
+              </li>
+            ))}
+          </ol>
+        </Section>
+      )}
 
       {/* 画像（1枚なら全幅の解説図・複数ならグリッド。タップで拡大） */}
       {item.images && item.images.length > 0 && (

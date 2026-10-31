@@ -107,11 +107,13 @@ export function parseSelfCare(raw: string, slug: string, file: string): SelfCare
   if (!meta.title) {
     throw new Error(`${file} に title（ページのタイトル）がありません。`);
   }
-  if (sections.steps.length === 0) {
-    const hint = unknown.length
-      ? `\n見つかった見出し: ${unknown.join(" / ")}（「## 実施方法」と書いてください）`
-      : "";
-    throw new Error(`${file} に「## 実施方法」の手順が1つもありません。${hint}`);
+  // 「## 実施方法」は任意です（名前・画像・動画だけでもページを作れます）。
+  // ただし手順が無く、知らない見出しだけがあるときは書き間違いの可能性が高いのでエラーにします。
+  if (sections.steps.length === 0 && unknown.length > 0) {
+    throw new Error(
+      `${file} に知らない見出しがあります: ${unknown.join(" / ")}\n` +
+        `使える見出しは「## 目的」「## 実施方法」「## 注意点」です。`
+    );
   }
 
   return {
@@ -133,5 +135,6 @@ export function parseSelfCare(raw: string, slug: string, file: string): SelfCare
       ? toNumber(meta.popularity, "popularity", file)
       : undefined,
     images: [],
+    videoSrc: "",
   };
 }
