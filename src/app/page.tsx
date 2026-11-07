@@ -15,6 +15,9 @@ export default function HomePage() {
     url: SITE.siteUrl,
   };
 
+  // ログイン機能のオン／オフ（clinic.ts の requireLogin）
+  const requireLogin = CLINIC.requireLogin;
+
   // ログインなしで公開する3つ（clinic.ts の recommendedSlugs）
   const freeItems = CLINIC.recommendedSlugs
     .map((slug) => getSelfCareBySlug(slug))
@@ -36,31 +39,47 @@ export default function HomePage() {
           </div>
           <p className="mb-3 inline-flex items-center gap-2 rounded-full bg-brand-50 px-3 py-1 text-xs font-medium text-brand-700">
             <span className="h-1.5 w-1.5 rounded-full bg-brand-500" />
-            {CLINIC.name} 会員専用
+            {requireLogin ? `${CLINIC.name} 会員専用` : CLINIC.name}
           </p>
           <h1 className="font-serif text-2xl font-bold leading-[1.45] text-ink-900 sm:text-3xl">
             セルフケアライブラリ
           </h1>
           <p className="mt-3 text-sm leading-relaxed text-ink-500">
-            ご来院いただいた会員様に、症状・部位別のセルフケアを動画と写真でご案内しています。
+            {requireLogin
+              ? "ご来院いただいた会員様に、症状・部位別のセルフケアを動画と写真でご案内しています。"
+              : "症状・部位別のセルフケアを動画と写真でご案内しています。"}
             施術の効果を、ご自宅でも維持していただくためのライブラリです。
           </p>
         </div>
 
-        <div className="relative mx-auto mt-7 max-w-md">
-          <MemberLogin />
-        </div>
+        {requireLogin ? (
+          <>
+            <div className="relative mx-auto mt-7 max-w-md">
+              <MemberLogin />
+            </div>
 
-        {/* セラピストへの案内 */}
-        <div className="relative mx-auto mt-5 max-w-md rounded-2xl border border-brand-100 bg-brand-50 p-4 text-center">
-          <p className="text-sm font-bold leading-relaxed text-brand-700">
-            ご覧いただくには会員コードが必要です。
-          </p>
-          <p className="mt-1.5 text-xs leading-relaxed text-brand-700/85">
-            コードは施術時にお渡ししています。お持ちでない方・お忘れの方は、
-            担当セラピストにお尋ねください。
-          </p>
-        </div>
+            {/* セラピストへの案内 */}
+            <div className="relative mx-auto mt-5 max-w-md rounded-2xl border border-brand-100 bg-brand-50 p-4 text-center">
+              <p className="text-sm font-bold leading-relaxed text-brand-700">
+                ご覧いただくには会員コードが必要です。
+              </p>
+              <p className="mt-1.5 text-xs leading-relaxed text-brand-700/85">
+                コードは施術時にお渡ししています。お持ちでない方・お忘れの方は、
+                担当セラピストにお尋ねください。
+              </p>
+            </div>
+          </>
+        ) : (
+          <div className="relative mx-auto mt-7 max-w-md text-center">
+            <Link
+              href="/library/"
+              className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-ink-800 px-6 py-4 text-base font-bold text-white shadow-soft transition hover:bg-ink-900"
+            >
+              セルフケアライブラリを見る
+              <span aria-hidden>→</span>
+            </Link>
+          </div>
+        )}
       </section>
 
       {/* ログインなしで見られる3つ */}
@@ -70,9 +89,11 @@ export default function HomePage() {
             <h2 className="heading-accent inline-block font-serif text-xl font-bold text-ink-800">
               まずはこの3つから
             </h2>
-            <span className="rounded-full bg-emerald-50 px-2.5 py-1 text-xs font-bold text-emerald-700">
-              ログイン不要でご覧いただけます
-            </span>
+            {requireLogin && (
+              <span className="rounded-full bg-emerald-50 px-2.5 py-1 text-xs font-bold text-emerald-700">
+                ログイン不要でご覧いただけます
+              </span>
+            )}
           </div>
           <p className="mb-5 text-sm leading-relaxed text-ink-500">
             院がとくにおすすめするセルフケアです。動画・写真・手順まですべてご覧いただけます。
@@ -85,7 +106,14 @@ export default function HomePage() {
           <p className="mt-5 rounded-2xl border border-ink-100 bg-white p-4 text-sm leading-relaxed text-ink-500">
             このほかにも、首・肩・腰・股関節・脚など
             <strong className="font-bold text-ink-800">さまざまなセルフケア</strong>
-            をご用意しています。ご覧いただけるのは会員様限定です。
+            をご用意しています。
+            {requireLogin ? (
+              "ご覧いただけるのは会員様限定です。"
+            ) : (
+              <Link href="/library/" className="text-brand-600 underline">
+                セルフケアライブラリへ
+              </Link>
+            )}
           </p>
         </section>
       )}

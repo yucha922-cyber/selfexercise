@@ -15,7 +15,11 @@ export default function Footer() {
         </p>
 
         <nav className="mt-6 flex flex-wrap gap-x-6 gap-y-2 text-sm text-ink-600">
-          <Link href="/" className="hover:text-brand-600">会員ログイン</Link>
+          {CLINIC.requireLogin ? (
+            <Link href="/" className="hover:text-brand-600">会員ログイン</Link>
+          ) : (
+            <Link href="/library/" className="hover:text-brand-600">セルフケアライブラリ</Link>
+          )}
           <Link href="/analysis/" className="hover:text-brand-600">AI姿勢分析</Link>
         </nav>
 

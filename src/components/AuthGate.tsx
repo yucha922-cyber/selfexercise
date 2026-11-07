@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { isExpired, isMember } from "@/lib/auth";
+import { canView, isExpired, isLoginRequired, isMember } from "@/lib/auth";
 import { recordVisit } from "@/lib/visits";
 
 // 会員限定エリアのソフトな入口ガード。
@@ -10,6 +10,8 @@ import { recordVisit } from "@/lib/visits";
 //
 // allow を true にすると、ログインしていなくても中身を表示します。
 // 「院からのおすすめ」3つを無料公開するために使っています（src/lib/access.ts）。
+//
+// clinic.ts の requireLogin が false のときは、ログインなしで常に中身を表示します。
 export default function AuthGate({
   children,
   allow = false,
@@ -18,13 +20,13 @@ export default function AuthGate({
   allow?: boolean;
 }) {
   const [state, setState] = useState<"checking" | "ok" | "no" | "expired">(
-    allow ? "ok" : "checking"
+    allow || !isLoginRequired() ? "ok" : "checking"
   );
 
   useEffect(() => {
-    // 会員なら、どのページから来ても今日のログインスタンプを押す
-    if (isMember()) recordVisit();
-    if (allow) return;
+    // 閲覧できる方なら、どのページから来ても今日のログインスタンプを押す
+    if (canView()) recordVisit();
+    if (allow || !isLoginRequired()) return;
     if (isMember()) setState("ok");
     else setState(isExpired() ? "expired" : "no");
   }, [allow]);

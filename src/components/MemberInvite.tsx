@@ -2,15 +2,15 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { isMember } from "@/lib/auth";
+import { canView } from "@/lib/auth";
 
 // 無料公開しているセルフケアの最後に出す会員案内。
-// すでにログイン済みの方には表示しません。
+// すでにログイン済みの方・ログイン機能がオフのときは表示しません。
 export default function MemberInvite() {
   const [show, setShow] = useState(false);
 
   useEffect(() => {
-    setShow(!isMember());
+    setShow(!canView());
   }, []);
 
   if (!show) return null;
