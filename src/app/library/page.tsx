@@ -13,7 +13,7 @@ import LoginStamp from "@/components/LoginStamp";
 import InstallPrompt from "@/components/InstallPrompt";
 
 export const metadata: Metadata = {
-  title: "セルフケアライブラリ（会員専用）",
+  title: CLINIC.requireLogin ? "セルフケアライブラリ（会員専用）" : "セルフケアライブラリ",
   description: "会員様向けのセルフケア動画・画像ライブラリ。",
   robots: { index: false, follow: false },
 };
@@ -27,7 +27,9 @@ export default function LibraryPage() {
   return (
     <AuthGate>
       <div className="mb-6">
-        <p className="text-xs font-medium tracking-wider2 text-brand-600">会員専用エリア</p>
+        <p className="text-xs font-medium tracking-wider2 text-brand-600">
+          {CLINIC.requireLogin ? "会員専用エリア" : CLINIC.name}
+        </p>
         <h1 className="mt-1.5 font-serif text-2xl font-bold text-ink-900 sm:text-3xl">
           セルフケアライブラリ
         </h1>

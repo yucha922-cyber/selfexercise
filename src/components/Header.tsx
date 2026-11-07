@@ -1,5 +1,6 @@
 import Link from "next/link";
 import Logo from "./Logo";
+import { CLINIC } from "@/config/clinic";
 
 export default function Header() {
   return (
@@ -13,10 +14,10 @@ export default function Header() {
             姿勢分析
           </Link>
           <Link
-            href="/"
+            href={CLINIC.requireLogin ? "/" : "/library/"}
             className="ml-1 rounded-full bg-brand-500 px-4 py-2 text-xs font-bold text-white transition hover:bg-brand-600"
           >
-            会員ログイン
+            {CLINIC.requireLogin ? "会員ログイン" : "セルフケア"}
           </Link>
         </nav>
       </div>

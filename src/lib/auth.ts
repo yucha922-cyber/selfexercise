@@ -9,6 +9,18 @@ import { CLINIC } from "@/config/clinic";
 
 const KEY = "naoru:member";
 
+/**
+ * ログイン機能が有効かどうか（clinic.ts の requireLogin）。
+ * false のときは、会員限定ページも含めて誰でも閲覧できます。
+ */
+export const isLoginRequired = (): boolean => CLINIC.requireLogin;
+
+/**
+ * 会員限定ページを見られる状態か。
+ * ログイン機能がオフなら常に true、オンなら会員コードでログイン済みのときだけ true。
+ */
+export const canView = (): boolean => !isLoginRequired() || isMember();
+
 /** 1つの会員コードに紐づく設定（clinic.ts の memberCodes の1件ぶん） */
 export type MemberPlan = {
   code: string;
